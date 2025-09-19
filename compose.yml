@@ -1,0 +1,6 @@
+services:
+  backend:
+    context: ./backend
+    dockerfile: Dockerfile
+    env_file:
+      - .env
