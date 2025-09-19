@@ -1,0 +1,29 @@
+# --- IDE and editor files ---
+.vscode/
+# kilocode (cloud based IDE)
+.kilocode/
+# JetBrains IDE
+.idea/
+# Vim temporary files
+*.swp
+*.swo
+# Backup files
+*~
+
+
+# --- Production builds ---
+build/
+
+
+# --- Python ---
+__pycache__/
+ENV/
+env/
+venv/
+build/
+dist/
+
+
+# --- Temporary file ---
+*.tmp
+*.temp
