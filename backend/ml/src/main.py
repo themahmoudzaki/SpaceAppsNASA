@@ -25,7 +25,7 @@ def main():
         kepler_path=kepler_path,
         k2_path=k2_path,
         tess_path=tess_path,
-        data_folder=data_folder,
+        data_folder=data_folder / "processed",
     )
     df = data_loader.merge_data()
     data_visualizer = EXODataVisualizer(df)

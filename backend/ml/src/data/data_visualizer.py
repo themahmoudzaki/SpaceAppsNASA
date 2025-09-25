@@ -11,8 +11,11 @@ from pathlib import Path
 # load_dotenv()
 # os.getenv("LOGGING_DIR", "reports/")
 
-LOGGING_DIR = Path("../reports")
+LOGGING_DIR = Path("../reports/") / "logs"
 LOGGING_DIR.mkdir(parents=True, exist_ok=True)
+
+FIGS_PATH = Path("../reports") / "figures"
+FIGS_PATH.mkdir(parents=True, exist_ok=True)
 
 logging_file = LOGGING_DIR / "Data_visualizer.log"
 file_handler = logging.FileHandler(str(logging_file))
@@ -38,7 +41,7 @@ class EXODataVisualizer:
         logging.info(f"DataFrame unique values:\n{self.df.nunique()}")
 
         self.df.hist(figsize=(15, 10), bins=30)
-        plt.savefig(f'{LOGGING_DIR / "hist"}')
+        plt.savefig(f'{FIGS_PATH / "hist"}')
 
         plt.figure(figsize=(12, 8))
         sns.heatmap(
@@ -46,7 +49,7 @@ class EXODataVisualizer:
             annot=False,
             cmap="coolwarm",
         )
-        plt.savefig(f'{LOGGING_DIR / "heatmap"}')
+        plt.savefig(f'{FIGS_PATH / "heatmap"}')
 
 
 __all__ = ["EXODataVisualizer"]

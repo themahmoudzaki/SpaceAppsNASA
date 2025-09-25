@@ -8,7 +8,7 @@ from typing import Optional
 # load_dotenv()
 # os.getenv("LOGGER_PATH", "reports/")
 
-LOGGER_PATH = Path("../reports")
+LOGGER_PATH = Path("../reports") / "logs"
 LOGGER_PATH.mkdir(parents=True, exist_ok=True)
 
 logging_file = LOGGER_PATH / "Data_processing.log"
