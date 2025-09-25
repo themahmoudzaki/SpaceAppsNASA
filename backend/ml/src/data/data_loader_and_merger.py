@@ -1,13 +1,22 @@
 import pandas as pd
 import logging
+from pathlib import Path
+from typing import Optional
 
+# import os
+# from dotenv import load_dotenv
+# load_dotenv()
+# os.getenv("LOGGER_PATH", "reports/")
+
+LOGGER_PATH = Path("../reports") / "logs"
+LOGGER_PATH.mkdir(parents=True, exist_ok=True)
+
+logging_file = LOGGER_PATH / "Data_processing.log"
+file_handler = logging.FileHandler(str(logging_file))
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.StreamHandler(),  # To print to console
-        logging.FileHandler("data_processing.log"),  # To save to a file
-    ],
+    handlers=[logging.StreamHandler(), file_handler],
 )
 
 TARGET_FEATURES = {
@@ -37,7 +46,13 @@ TARGET_FEATURES = {
 
 
 class ExoPlanetData:
-    def __init__(self, kepler_path, k2_path, tess_path, data_folder):
+    def __init__(
+        self,
+        kepler_path,
+        k2_path,
+        tess_path,
+        data_folder: Optional[Path] = None,
+    ):
         self.kepler_path = kepler_path
         self.k2_path = k2_path
         self.tess_path = tess_path
@@ -87,13 +102,13 @@ class ExoPlanetData:
         )
         logging.info(f"Merging complete. Final DataFrame shape: {merged_df.shape}")
         logging.info(merged_df.head())
-
-        self.output_path = self.data_folder / "Merged_data.csv"
-        try:
-            merged_df.to_csv(self.output_path, index=False)
-            logging.info(f"Successfully saved merged data to {self.output_path}")
-        except Exception as e:
-            logging.error(f"Failed to save merged data to {self.output_path}: {e}")
+        if self.data_folder:
+            self.output_path = self.data_folder / "Merged_data.csv"
+            try:
+                merged_df.to_csv(self.output_path, index=False)
+                logging.info(f"Successfully saved merged data to {self.output_path}")
+            except Exception as e:
+                logging.error(f"Failed to save merged data to {self.output_path}: {e}")
         return merged_df
 
 
