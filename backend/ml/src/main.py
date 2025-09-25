@@ -29,6 +29,7 @@ def main():
     )
     df = data_loader.merge_data()
     data_visualizer = EXODataVisualizer(df)
+    data_visualizer.visualize_data()
 
 
 if __name__ == "__main__":
