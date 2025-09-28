@@ -4,12 +4,7 @@ from typing import Optional
 from ..utils.common import setup_logger
 
 
-# import os
-# from dotenv import load_dotenv
-# load_dotenv()
-# os.getenv("LOGGER_PATH", "reports/")
-
-LOGGER_FILE_PATH = Path("../reports") / "logs" / "Data_loader_merger.log"
+LOGGER_FILE_PATH = Path("reports") / "logs" / "Data_loader_merger.log"
 logger = setup_logger("DataLoaderAndMerger", LOGGER_FILE_PATH)
 
 

@@ -1,45 +1,5 @@
-2025-09-25 05:49:53,148 - INFO - Loaded Data from ..\data\kepler_captured_data.csv
-2025-09-25 05:49:53,149 - INFO - (9564, 141)
-2025-09-25 05:49:53,149 - INFO -    rowid     kepid kepoi_name   kepler_name  ... koi_dikco_mdec koi_dikco_mdec_err koi_dikco_msky koi_dikco_msky_err
-0      1  10797460  K00752.01  Kepler-227 b  ...          0.310              0.170          0.320              0.160
-1      2  10797460  K00752.02  Kepler-227 c  ...          0.120              0.730          0.500              0.450
-2      3  10811496  K00753.01           NaN  ...         -0.027              0.074          0.027              0.074
-3      4  10848459  K00754.01           NaN  ...          0.099              0.077          0.276              0.076
-4      5  10854555  K00755.01  Kepler-664 b  ...          0.020              0.160          0.070              0.200
-
-[5 rows x 141 columns]
-2025-09-25 05:49:53,272 - INFO - Loaded Data from ..\data\K2_mission_captured_data.csv
-2025-09-25 05:49:53,272 - INFO - (3992, 295)
-2025-09-25 05:49:53,272 - INFO -    rowid            pl_name        hostname pl_letter  ... st_nspec pl_nespec pl_ntranspec pl_ndispec
-0      1        BD+20 594 b       BD+20 594         b  ...      0.0       0.0          0.0        0.0
-1      2        BD+20 594 b       BD+20 594         b  ...      0.0       0.0          0.0        0.0
-2      3        BD+20 594 b       BD+20 594         b  ...      0.0       0.0          0.0        0.0
-3      4  EPIC 201111557.01  EPIC 201111557       NaN  ...      0.0       0.0          0.0        0.0
-4      5  EPIC 201111557.01  EPIC 201111557       NaN  ...      0.0       0.0          0.0        0.0
-
-[5 rows x 295 columns]
-2025-09-25 05:49:53,372 - INFO - Loaded Data from ..\data\TESS_mission_captured_data.csv
-2025-09-25 05:49:53,373 - INFO - (7668, 87)
-2025-09-25 05:49:53,373 - INFO -    rowid      toi  toipfx        tid  ...  st_radlim  st_radsymerr          toi_created            rowupdate
-0      1  1000.01    1000   50365310  ...          0             1  2019-07-24 15:58:33  2024-09-09 10:08:01
-1      2  1001.01    1001   88863718  ...          0             1  2019-07-24 15:58:33  2023-04-03 14:31:04
-2      3  1002.01    1002  124709665  ...          0             1  2019-07-24 15:58:33  2022-07-11 16:02:02
-3      4  1003.01    1003  106997505  ...          0             1  2019-07-24 15:58:33  2022-02-23 10:10:02
-4      5  1004.01    1004  238597883  ...          0             1  2019-07-24 15:58:33  2024-09-09 10:08:01
-
-[5 rows x 87 columns]
-2025-09-25 05:49:53,417 - INFO - Merging complete. Final DataFrame shape: (21224, 16)
-2025-09-25 05:49:53,417 - INFO -       period  duration    depth  planet_radius       kepid        koi  ... teff  logg  tic  planet_name  host_name  toi
-0   9.488036   2.95750    615.8           2.26  10797460.0  K00752.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
-1  54.418383   4.50700    874.8           2.83  10797460.0  K00752.02  ...  NaN   NaN  NaN          NaN        NaN  NaN
-2  19.899140   1.78220  10829.0          14.60  10811496.0  K00753.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
-3   1.736952   2.40641   8079.2          33.46  10848459.0  K00754.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
-4   2.525592   1.65450    603.3           2.75  10854555.0  K00755.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
-
-[5 rows x 16 columns]
-2025-09-25 05:49:53,500 - INFO - Successfully saved merged data to ..\data\processed\Merged_data.csv
-2025-09-25 05:49:53,500 - INFO - DataFrame shape: (21224, 16)
-2025-09-25 05:49:53,501 - INFO - DataFrame dtypes:
+2025-09-28 02:53:32,740 - DataVisualizer - INFO - DataFrame shape: (21224, 16)
+2025-09-28 02:53:32,740 - DataVisualizer - INFO - DataFrame dtypes:
 period             float64
 duration           float64
 depth              float64
@@ -57,107 +17,7 @@ planet_name         object
 host_name           object
 toi                float64
 dtype: object
-2025-09-25 05:49:53,507 - INFO - DataFrame head:
-      period  duration    depth  planet_radius       kepid        koi  ... teff  logg  tic  planet_name  host_name  toi
-0   9.488036   2.95750    615.8           2.26  10797460.0  K00752.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
-1  54.418383   4.50700    874.8           2.83  10797460.0  K00752.02  ...  NaN   NaN  NaN          NaN        NaN  NaN
-2  19.899140   1.78220  10829.0          14.60  10811496.0  K00753.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
-3   1.736952   2.40641   8079.2          33.46  10848459.0  K00754.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
-4   2.525592   1.65450    603.3           2.75  10854555.0  K00755.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
-
-[5 rows x 16 columns]
-2025-09-25 05:49:53,512 - INFO - DataFrame info: 
-None
-2025-09-25 05:49:53,527 - INFO - DataFrame describe:
-              period      duration         depth  planet_radius  ...   star_radius          teff         logg          toi
-count   21051.000000  12320.000000  9.201000e+03   19514.000000  ...  11009.000000  10373.000000  9148.000000  7668.000000
-mean       48.342558      5.086007  2.379134e+04      53.670676  ...      1.324680   5609.734357     4.338540  3731.951026
-std      1073.583587      5.890517  8.224268e+04    2113.796247  ...      1.926614   1448.988139     0.314180  2142.315067
-min         0.152076     -0.068000  0.000000e+00       0.080000  ...      0.110000   2520.000000     0.100000   101.010000
-25%         2.626698      2.271090  1.599000e+02       1.900000  ...      0.790000   4985.000000     4.160000  1852.760000
-50%         5.850824      3.492450  4.211000e+02       3.940000  ...      1.080000   5660.000000     4.372375  3718.510000
-75%        16.347230      5.620698  1.473400e+03      13.385078  ...      1.540000   6155.000000     4.540000  5590.260000
-max    129995.778400    138.540000  1.541400e+06  200346.000000  ...    102.030000  50000.000000     5.960650  7475.010000
-
-[8 rows x 10 columns]
-2025-09-25 05:49:53,532 - INFO - DataFrame unique values:
-period             20848
-duration            8987
-depth               6947
-planet_radius      11142
-kepid               8214
-koi                 9564
-disposition            4
-semi_major_axis     3999
-source                 3
-star_radius         4004
-teff                5168
-logg                2552
-tic                 1557
-planet_name         1806
-host_name           1560
-toi                 7668
-dtype: int64
-2025-09-28 01:56:22,850 - INFO - Loaded Data from ..\data\kepler_captured_data.csv
-2025-09-28 01:56:22,850 - INFO - (9564, 141)
-2025-09-28 01:56:22,850 - INFO -    rowid     kepid kepoi_name  ... koi_dikco_mdec_err koi_dikco_msky koi_dikco_msky_err
-0      1  10797460  K00752.01  ...              0.170          0.320              0.160
-1      2  10797460  K00752.02  ...              0.730          0.500              0.450
-2      3  10811496  K00753.01  ...              0.074          0.027              0.074
-3      4  10848459  K00754.01  ...              0.077          0.276              0.076
-4      5  10854555  K00755.01  ...              0.160          0.070              0.200
-
-[5 rows x 141 columns]
-2025-09-28 01:56:23,009 - INFO - Loaded Data from ..\data\K2_mission_captured_data.csv
-2025-09-28 01:56:23,009 - INFO - (3992, 295)
-2025-09-28 01:56:23,009 - INFO -    rowid            pl_name        hostname  ... pl_nespec pl_ntranspec pl_ndispec
-0      1        BD+20 594 b       BD+20 594  ...       0.0          0.0        0.0
-1      2        BD+20 594 b       BD+20 594  ...       0.0          0.0        0.0
-2      3        BD+20 594 b       BD+20 594  ...       0.0          0.0        0.0
-3      4  EPIC 201111557.01  EPIC 201111557  ...       0.0          0.0        0.0
-4      5  EPIC 201111557.01  EPIC 201111557  ...       0.0          0.0        0.0
-
-[5 rows x 295 columns]
-2025-09-28 01:56:23,127 - INFO - Loaded Data from ..\data\TESS_mission_captured_data.csv
-2025-09-28 01:56:23,127 - INFO - (7668, 87)
-2025-09-28 01:56:23,127 - INFO -    rowid      toi  toipfx  ...  st_radsymerr          toi_created            rowupdate
-0      1  1000.01    1000  ...             1  2019-07-24 15:58:33  2024-09-09 10:08:01
-1      2  1001.01    1001  ...             1  2019-07-24 15:58:33  2023-04-03 14:31:04
-2      3  1002.01    1002  ...             1  2019-07-24 15:58:33  2022-07-11 16:02:02
-3      4  1003.01    1003  ...             1  2019-07-24 15:58:33  2022-02-23 10:10:02
-4      5  1004.01    1004  ...             1  2019-07-24 15:58:33  2024-09-09 10:08:01
-
-[5 rows x 87 columns]
-2025-09-28 01:56:23,172 - INFO - Merging complete. Final DataFrame shape: (21224, 16)
-2025-09-28 01:56:23,172 - INFO -       period  duration    depth  planet_radius  ...  tic planet_name host_name  toi
-0   9.488036   2.95750    615.8           2.26  ...  NaN         NaN       NaN  NaN
-1  54.418383   4.50700    874.8           2.83  ...  NaN         NaN       NaN  NaN
-2  19.899140   1.78220  10829.0          14.60  ...  NaN         NaN       NaN  NaN
-3   1.736952   2.40641   8079.2          33.46  ...  NaN         NaN       NaN  NaN
-4   2.525592   1.65450    603.3           2.75  ...  NaN         NaN       NaN  NaN
-
-[5 rows x 16 columns]
-2025-09-28 01:56:23,256 - INFO - Successfully saved merged data to ..\data\processed\Merged_data.csv
-2025-09-28 01:56:23,256 - INFO - DataFrame shape: (21224, 16)
-2025-09-28 01:56:23,257 - INFO - DataFrame dtypes:
-period             float64
-duration           float64
-depth              float64
-planet_radius      float64
-kepid              float64
-koi                 object
-disposition         object
-semi_major_axis    float64
-source              object
-star_radius        float64
-teff               float64
-logg               float64
-tic                 object
-planet_name         object
-host_name           object
-toi                float64
-dtype: object
-2025-09-28 01:56:23,262 - INFO - DataFrame head:
+2025-09-28 02:53:32,746 - DataVisualizer - INFO - DataFrame head:
       period  duration    depth  planet_radius  ...  tic planet_name host_name  toi
 0   9.488036   2.95750    615.8           2.26  ...  NaN         NaN       NaN  NaN
 1  54.418383   4.50700    874.8           2.83  ...  NaN         NaN       NaN  NaN
@@ -166,9 +26,9 @@ dtype: object
 4   2.525592   1.65450    603.3           2.75  ...  NaN         NaN       NaN  NaN
 
 [5 rows x 16 columns]
-2025-09-28 01:56:23,268 - INFO - DataFrame info: 
+2025-09-28 02:53:32,751 - DataVisualizer - INFO - DataFrame info: 
 None
-2025-09-28 01:56:23,285 - INFO - DataFrame describe:
+2025-09-28 02:53:32,765 - DataVisualizer - INFO - DataFrame describe:
               period      duration  ...         logg          toi
 count   21051.000000  12320.000000  ...  9148.000000  7668.000000
 mean       48.342558      5.086007  ...     4.338540  3731.951026
@@ -180,7 +40,7 @@ min         0.152076     -0.068000  ...     0.100000   101.010000
 max    129995.778400    138.540000  ...     5.960650  7475.010000
 
 [8 rows x 10 columns]
-2025-09-28 01:56:23,291 - INFO - DataFrame unique values:
+2025-09-28 02:53:32,771 - DataVisualizer - INFO - DataFrame unique values:
 period             20848
 duration            8987
 depth               6947
