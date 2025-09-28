@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+</head>
+<body>
+<form id="login-form">
+    {% csrf_token %}
+    <h1>login</h1>
+    <label for="username">username</label>
+    <input type="text" name="username" placeholder="username">
+    <label for="password">password</label>
+    <input type="password" name="password" placeholder="password">
+    <button type="submit">login</button>
+</form>
+<h2>no account? lammmeee. fix asap: <a href="/sign-up">sign up</a></h2>
+<script>
+    const form = document.getElementById('login-form');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+        await fetch('/auth/login/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify(data)
+        }).then(res => {
+            if (res.ok) {
+                window.location.href = '/';
+            } else {
+                res.json().then(data => console.log(data)).catch(err => console.error("JSON parse error:", err));
+
+            }
+        })
+    });
+
+</script>
+</body>
+</html>
