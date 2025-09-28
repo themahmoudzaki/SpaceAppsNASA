@@ -1,7 +1,7 @@
 # 🌌 ExoPlanet Hunter AI
 **Project for NASA Space Apps Challenge 2025**
 
-## **Project Name:** *Nimbus Nexus*
+## **Project Name:** *Exo X Hunter*
 
 **Version:** 0.3
 
