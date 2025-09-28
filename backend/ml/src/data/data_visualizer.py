@@ -5,6 +5,7 @@ import logging
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from pathlib import Path
+from ..utils.common import setup_logger
 
 # import os
 # from dotenv import load_dotenv
@@ -12,19 +13,12 @@ from pathlib import Path
 # os.getenv("LOGGING_DIR", "reports/")
 
 LOGGING_DIR = Path("../reports/") / "logs"
-LOGGING_DIR.mkdir(parents=True, exist_ok=True)
+LOGGER_FILE_PATH = LOGGING_DIR / "Data_visualizer.log"
+logger = setup_logger("DataVisualizer", LOGGER_FILE_PATH)
 
 FIGS_PATH = Path("../reports") / "figures"
 FIGS_PATH.mkdir(parents=True, exist_ok=True)
 
-logging_file = LOGGING_DIR / "Data_visualizer.log"
-file_handler = logging.FileHandler(str(logging_file))
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.StreamHandler(), file_handler],
-    force=True,  # Have to add since logger is already called before in dlm.py and caused some issues might look into a global logger later
-)
 
 
 class EXODataVisualizer:

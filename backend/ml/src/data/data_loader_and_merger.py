@@ -1,23 +1,17 @@
 import pandas as pd
-import logging
 from pathlib import Path
 from typing import Optional
+from ..utils.common import setup_logger
+
 
 # import os
 # from dotenv import load_dotenv
 # load_dotenv()
 # os.getenv("LOGGER_PATH", "reports/")
 
-LOGGER_PATH = Path("../reports") / "logs"
-LOGGER_PATH.mkdir(parents=True, exist_ok=True)
+LOGGER_FILE_PATH = Path("../reports") / "logs" / "Data_loader_merger.log"
+logger = setup_logger("DataLoaderAndMerger", LOGGER_FILE_PATH)
 
-logging_file = LOGGER_PATH / "Data_processing.log"
-file_handler = logging.FileHandler(str(logging_file))
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.StreamHandler(), file_handler],
-)
 
 TARGET_FEATURES = {
     "period": ["period", "orbper", "orbital_period", "koi_period", "pl_orbper"],
@@ -62,10 +56,10 @@ class ExoPlanetData:
         try:
             df = pd.read_csv(path, comment="#")
         except FileNotFoundError:
-            logging.error(f"File not found: {path}. Skipping this source")
-        logging.info(f"Loaded Data from {path}")
-        logging.info(df.shape)
-        logging.info(df.head())
+            logger.error(f"File not found: {path}. Skipping this source")
+        logger.info(f"Loaded Data from {path}")
+        logger.info(df.shape)
+        logger.info(df.head())
 
         df = self._standardize_data(df)
         return df
@@ -100,15 +94,15 @@ class ExoPlanetData:
             ignore_index=True,  # Creates a new clean index for the merged frame
             sort=False,  # Keeps the column order consistent
         )
-        logging.info(f"Merging complete. Final DataFrame shape: {merged_df.shape}")
-        logging.info(merged_df.head())
+        logger.info(f"Merging complete. Final DataFrame shape: {merged_df.shape}")
+        logger.info(merged_df.head())
         if self.data_folder:
             self.output_path = self.data_folder / "Merged_data.csv"
             try:
                 merged_df.to_csv(self.output_path, index=False)
-                logging.info(f"Successfully saved merged data to {self.output_path}")
+                logger.info(f"Successfully saved merged data to {self.output_path}")
             except Exception as e:
-                logging.error(f"Failed to save merged data to {self.output_path}: {e}")
+                logger.error(f"Failed to save merged data to {self.output_path}: {e}")
         return merged_df
 
 
