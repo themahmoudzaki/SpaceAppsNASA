@@ -1,22 +1,16 @@
 import os
 from dotenv import load_dotenv
-from data.data_loader_and_merger import ExoPlanetData
-from data.data_visualizer import EXODataVisualizer
-
+from src.data.data_loader_and_merger import ExoPlanetData
+from src.data.data_visualizer import EXODataVisualizer
+from src.data.data_preprocessor import DataPreprocessor
 load_dotenv()
 
 
 def main():
-    #
-    # Docker to be implemented
-    #
-    # k2_path = os.getenv("K2_DATA_PATH", "ml/data/K2_mission_captured_data.csv")
-    # kepler_path = os.getenv("KEPLER_DATA_PATH", "ml/data/kepler_captured_data.csv")
-    # tess_path = os.getenv("TESS_DATA_PATH", "ml/data/TESS_mission_captured_data.csv")
 
     from pathlib import Path
 
-    data_folder = Path("..") / "data"
+    data_folder = Path("data")
     k2_path = data_folder / "K2_mission_captured_data.csv"
     kepler_path = data_folder / "kepler_captured_data.csv"
     tess_path = data_folder / "TESS_mission_captured_data.csv"
@@ -30,7 +24,7 @@ def main():
     df = data_loader.merge_data()
     data_visualizer = EXODataVisualizer(df)
     data_visualizer.visualize_data()
-
+    df = DataPreprocessor(df)
 
 if __name__ == "__main__":
     main()
