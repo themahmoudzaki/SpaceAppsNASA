@@ -1,5 +1,5 @@
-2025-09-29 03:34:17,975 - DataVisualizer - INFO - DataFrame shape: (21224, 16)
-2025-09-29 03:34:17,975 - DataVisualizer - INFO - DataFrame dtypes:
+2025-09-29 04:14:30,979 - DataVisualizer - INFO - DataFrame shape: (21224, 16)
+2025-09-29 04:14:30,980 - DataVisualizer - INFO - DataFrame dtypes:
 period             float64
 duration           float64
 depth              float64
@@ -17,7 +17,7 @@ planet_name         object
 host_name           object
 toi                float64
 dtype: object
-2025-09-29 03:34:17,980 - DataVisualizer - INFO - DataFrame head:
+2025-09-29 04:14:30,987 - DataVisualizer - INFO - DataFrame head:
       period  duration    depth  planet_radius       kepid        koi  ... teff  logg  tic  planet_name  host_name  toi
 0   9.488036   2.95750    615.8           2.26  10797460.0  K00752.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
 1  54.418383   4.50700    874.8           2.83  10797460.0  K00752.02  ...  NaN   NaN  NaN          NaN        NaN  NaN
@@ -26,9 +26,9 @@ dtype: object
 4   2.525592   1.65450    603.3           2.75  10854555.0  K00755.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
 
 [5 rows x 16 columns]
-2025-09-29 03:34:17,986 - DataVisualizer - INFO - DataFrame info: 
+2025-09-29 04:14:30,991 - DataVisualizer - INFO - DataFrame info: 
 None
-2025-09-29 03:34:18,000 - DataVisualizer - INFO - DataFrame describe:
+2025-09-29 04:14:31,005 - DataVisualizer - INFO - DataFrame describe:
               period      duration         depth  planet_radius  ...   star_radius          teff         logg          toi
 count   21051.000000  12320.000000  9.201000e+03   19514.000000  ...  11009.000000  10373.000000  9148.000000  7668.000000
 mean       48.342558      5.086007  2.379134e+04      53.670676  ...      1.324680   5609.734357     4.338540  3731.951026
@@ -40,7 +40,7 @@ min         0.152076     -0.068000  0.000000e+00       0.080000  ...      0.1100
 max    129995.778400    138.540000  1.541400e+06  200346.000000  ...    102.030000  50000.000000     5.960650  7475.010000
 
 [8 rows x 10 columns]
-2025-09-29 03:34:18,006 - DataVisualizer - INFO - DataFrame unique values:
+2025-09-29 04:14:31,011 - DataVisualizer - INFO - DataFrame unique values:
 period             20848
 duration            8987
 depth               6947
@@ -58,7 +58,7 @@ planet_name         1806
 host_name           1560
 toi                 7668
 dtype: int64
-2025-09-29 03:34:18,009 - DataVisualizer - INFO - DataFrame null value:
+2025-09-29 04:14:31,014 - DataVisualizer - INFO - DataFrame null value:
 period               173
 duration            8904
 depth              12023
@@ -76,7 +76,7 @@ planet_name        17232
 host_name          17232
 toi                13556
 dtype: int64
-2025-09-29 03:34:18,012 - DataVisualizer - INFO - DataFrame null value percentage:
+2025-09-29 04:14:31,017 - DataVisualizer - INFO - DataFrame null value percentage:
 period              0.815115
 duration           41.952507
 depth              56.648134

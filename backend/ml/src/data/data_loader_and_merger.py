@@ -50,54 +50,60 @@ class ExoPlanetData:
     def load_data(self, path) -> pd.DataFrame:
         try:
             df = pd.read_csv(path, comment="#")
+            logger.info(f"Successfully loaded data from {path} with shape {df.shape}")
+            return self._standardize_data(df)
         except FileNotFoundError:
             logger.error(f"File not found: {path}. Skipping this source")
-        logger.info(f"Loaded Data from {path}")
-        logger.info(df.shape)
-        logger.info(df.head())
-
-        df = self._standardize_data(df)
-        return df
+        except Exception as e:
+            logger.error(f"An unexpected error occurred while loading {path}: {e}")
+            return None
 
     @staticmethod
     def _standardize_data(df: pd.DataFrame) -> pd.DataFrame:
         rename_map = {}
-        df_copy = df.copy()
-
         for standard_name, potential_names in TARGET_FEATURES.items():
             for potential_name in potential_names:
-                if potential_name in df_copy.columns:
+                if potential_name in df.columns:
                     rename_map[potential_name] = standard_name
                     break
 
-        df_copy = df_copy.rename(columns=rename_map)
-        final_cols = [col for col in TARGET_FEATURES.keys() if col in df_copy.columns]
-
-        return df_copy[final_cols]
+        df_renamed = df.rename(columns=rename_map)
+        final_cols = [
+            col for col in TARGET_FEATURES.keys() if col in df_renamed.columns
+        ]
+        return df_renamed[final_cols]
 
     def merge_data(self) -> pd.DataFrame:
-        df_kepler = self.load_data(self.kepler_path)
-        df_k2 = self.load_data(self.k2_path)
-        df_tess = self.load_data(self.tess_path)
+        dataframes_to_merge = []
+        sources = {
+            "Kepler": self.kepler_path,
+            "K2": self.k2_path,
+            "TESS": self.tess_path,
+        }
 
-        df_kepler["source"] = "Kepler"
-        df_k2["source"] = "K2"
-        df_tess["source"] = "TESS"
+        for source_name, path in sources.items():
+            df = self.load_data(path)
+            if df is not None and not df.empty:
+                df["source"] = source_name
+                dataframes_to_merge.append(df)
 
-        merged_df = pd.concat(
-            [df_kepler, df_k2, df_tess],
-            ignore_index=True,  # Creates a new clean index for the merged frame
-            sort=False,  # Keeps the column order consistent
-        )
+        if not dataframes_to_merge:
+            logger.error(
+                "No dataframes to merge. All sources might have failed to load."
+            )
+            return None
+
+        merged_df = pd.concat(dataframes_to_merge, ignore_index=True, sort=False)
         logger.info(f"Merging complete. Final DataFrame shape: {merged_df.shape}")
-        logger.info(merged_df.head())
+
         if self.data_folder:
-            self.output_path = self.data_folder / "Merged_data.csv"
+            output_path = self.data_folder / "Merged_data.csv"
             try:
-                merged_df.to_csv(self.output_path, index=False)
-                logger.info(f"Successfully saved merged data to {self.output_path}")
+                output_path.parent.mkdir(parents=True, exist_ok=True)
+                merged_df.to_csv(output_path, index=False)
+                logger.info(f"Successfully saved merged data to {output_path}")
             except Exception as e:
-                logger.error(f"Failed to save merged data to {self.output_path}: {e}")
+                logger.error(f"Failed to save merged data to {output_path}: {e}")
         return merged_df
 
 
