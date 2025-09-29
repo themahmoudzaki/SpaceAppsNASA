@@ -1,80 +1,40 @@
-2025-09-28 02:48:43,208 - DataLoaderAndMerger - INFO - Loaded Data from data\kepler_captured_data.csv
-2025-09-28 02:48:43,208 - DataLoaderAndMerger - INFO - (9564, 141)
-2025-09-28 02:48:43,209 - DataLoaderAndMerger - INFO -    rowid     kepid kepoi_name  ... koi_dikco_mdec_err koi_dikco_msky koi_dikco_msky_err
-0      1  10797460  K00752.01  ...              0.170          0.320              0.160
-1      2  10797460  K00752.02  ...              0.730          0.500              0.450
-2      3  10811496  K00753.01  ...              0.074          0.027              0.074
-3      4  10848459  K00754.01  ...              0.077          0.276              0.076
-4      5  10854555  K00755.01  ...              0.160          0.070              0.200
+2025-09-29 03:34:17,609 - DataLoaderAndMerger - INFO - Loaded Data from data\kepler_captured_data.csv
+2025-09-29 03:34:17,610 - DataLoaderAndMerger - INFO - (9564, 141)
+2025-09-29 03:34:17,610 - DataLoaderAndMerger - INFO -    rowid     kepid kepoi_name   kepler_name  ... koi_dikco_mdec koi_dikco_mdec_err koi_dikco_msky koi_dikco_msky_err
+0      1  10797460  K00752.01  Kepler-227 b  ...          0.310              0.170          0.320              0.160
+1      2  10797460  K00752.02  Kepler-227 c  ...          0.120              0.730          0.500              0.450
+2      3  10811496  K00753.01           NaN  ...         -0.027              0.074          0.027              0.074
+3      4  10848459  K00754.01           NaN  ...          0.099              0.077          0.276              0.076
+4      5  10854555  K00755.01  Kepler-664 b  ...          0.020              0.160          0.070              0.200
 
 [5 rows x 141 columns]
-2025-09-28 02:48:43,326 - DataLoaderAndMerger - INFO - Loaded Data from data\K2_mission_captured_data.csv
-2025-09-28 02:48:43,327 - DataLoaderAndMerger - INFO - (3992, 295)
-2025-09-28 02:48:43,327 - DataLoaderAndMerger - INFO -    rowid            pl_name        hostname  ... pl_nespec pl_ntranspec pl_ndispec
-0      1        BD+20 594 b       BD+20 594  ...       0.0          0.0        0.0
-1      2        BD+20 594 b       BD+20 594  ...       0.0          0.0        0.0
-2      3        BD+20 594 b       BD+20 594  ...       0.0          0.0        0.0
-3      4  EPIC 201111557.01  EPIC 201111557  ...       0.0          0.0        0.0
-4      5  EPIC 201111557.01  EPIC 201111557  ...       0.0          0.0        0.0
+2025-09-29 03:34:17,744 - DataLoaderAndMerger - INFO - Loaded Data from data\K2_mission_captured_data.csv
+2025-09-29 03:34:17,744 - DataLoaderAndMerger - INFO - (3992, 295)
+2025-09-29 03:34:17,744 - DataLoaderAndMerger - INFO -    rowid            pl_name        hostname pl_letter  k2_name  ... st_nrvc st_nspec pl_nespec pl_ntranspec pl_ndispec
+0      1        BD+20 594 b       BD+20 594         b  K2-56 b  ...     0.0      0.0       0.0          0.0        0.0
+1      2        BD+20 594 b       BD+20 594         b  K2-56 b  ...     0.0      0.0       0.0          0.0        0.0
+2      3        BD+20 594 b       BD+20 594         b  K2-56 b  ...     0.0      0.0       0.0          0.0        0.0
+3      4  EPIC 201111557.01  EPIC 201111557       NaN      NaN  ...     0.0      0.0       0.0          0.0        0.0
+4      5  EPIC 201111557.01  EPIC 201111557       NaN      NaN  ...     0.0      0.0       0.0          0.0        0.0
 
 [5 rows x 295 columns]
-2025-09-28 02:48:43,417 - DataLoaderAndMerger - INFO - Loaded Data from data\TESS_mission_captured_data.csv
-2025-09-28 02:48:43,418 - DataLoaderAndMerger - INFO - (7668, 87)
-2025-09-28 02:48:43,418 - DataLoaderAndMerger - INFO -    rowid      toi  toipfx  ...  st_radsymerr          toi_created            rowupdate
-0      1  1000.01    1000  ...             1  2019-07-24 15:58:33  2024-09-09 10:08:01
-1      2  1001.01    1001  ...             1  2019-07-24 15:58:33  2023-04-03 14:31:04
-2      3  1002.01    1002  ...             1  2019-07-24 15:58:33  2022-07-11 16:02:02
-3      4  1003.01    1003  ...             1  2019-07-24 15:58:33  2022-02-23 10:10:02
-4      5  1004.01    1004  ...             1  2019-07-24 15:58:33  2024-09-09 10:08:01
+2025-09-29 03:34:17,852 - DataLoaderAndMerger - INFO - Loaded Data from data\TESS_mission_captured_data.csv
+2025-09-29 03:34:17,852 - DataLoaderAndMerger - INFO - (7668, 87)
+2025-09-29 03:34:17,853 - DataLoaderAndMerger - INFO -    rowid      toi  toipfx        tid  ...  st_radlim  st_radsymerr          toi_created            rowupdate
+0      1  1000.01    1000   50365310  ...          0             1  2019-07-24 15:58:33  2024-09-09 10:08:01
+1      2  1001.01    1001   88863718  ...          0             1  2019-07-24 15:58:33  2023-04-03 14:31:04
+2      3  1002.01    1002  124709665  ...          0             1  2019-07-24 15:58:33  2022-07-11 16:02:02
+3      4  1003.01    1003  106997505  ...          0             1  2019-07-24 15:58:33  2022-02-23 10:10:02
+4      5  1004.01    1004  238597883  ...          0             1  2019-07-24 15:58:33  2024-09-09 10:08:01
 
 [5 rows x 87 columns]
-2025-09-28 02:48:43,462 - DataLoaderAndMerger - INFO - Merging complete. Final DataFrame shape: (21224, 16)
-2025-09-28 02:48:43,463 - DataLoaderAndMerger - INFO -       period  duration    depth  planet_radius  ...  tic planet_name host_name  toi
-0   9.488036   2.95750    615.8           2.26  ...  NaN         NaN       NaN  NaN
-1  54.418383   4.50700    874.8           2.83  ...  NaN         NaN       NaN  NaN
-2  19.899140   1.78220  10829.0          14.60  ...  NaN         NaN       NaN  NaN
-3   1.736952   2.40641   8079.2          33.46  ...  NaN         NaN       NaN  NaN
-4   2.525592   1.65450    603.3           2.75  ...  NaN         NaN       NaN  NaN
+2025-09-29 03:34:17,895 - DataLoaderAndMerger - INFO - Merging complete. Final DataFrame shape: (21224, 16)
+2025-09-29 03:34:17,895 - DataLoaderAndMerger - INFO -       period  duration    depth  planet_radius       kepid        koi  ... teff  logg  tic  planet_name  host_name  toi
+0   9.488036   2.95750    615.8           2.26  10797460.0  K00752.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
+1  54.418383   4.50700    874.8           2.83  10797460.0  K00752.02  ...  NaN   NaN  NaN          NaN        NaN  NaN
+2  19.899140   1.78220  10829.0          14.60  10811496.0  K00753.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
+3   1.736952   2.40641   8079.2          33.46  10848459.0  K00754.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
+4   2.525592   1.65450    603.3           2.75  10854555.0  K00755.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
 
 [5 rows x 16 columns]
-2025-09-28 02:48:43,543 - DataLoaderAndMerger - INFO - Successfully saved merged data to data\processed\Merged_data.csv
-2025-09-28 02:53:32,387 - DataLoaderAndMerger - INFO - Loaded Data from data\kepler_captured_data.csv
-2025-09-28 02:53:32,387 - DataLoaderAndMerger - INFO - (9564, 141)
-2025-09-28 02:53:32,387 - DataLoaderAndMerger - INFO -    rowid     kepid kepoi_name  ... koi_dikco_mdec_err koi_dikco_msky koi_dikco_msky_err
-0      1  10797460  K00752.01  ...              0.170          0.320              0.160
-1      2  10797460  K00752.02  ...              0.730          0.500              0.450
-2      3  10811496  K00753.01  ...              0.074          0.027              0.074
-3      4  10848459  K00754.01  ...              0.077          0.276              0.076
-4      5  10854555  K00755.01  ...              0.160          0.070              0.200
-
-[5 rows x 141 columns]
-2025-09-28 02:53:32,515 - DataLoaderAndMerger - INFO - Loaded Data from data\K2_mission_captured_data.csv
-2025-09-28 02:53:32,515 - DataLoaderAndMerger - INFO - (3992, 295)
-2025-09-28 02:53:32,516 - DataLoaderAndMerger - INFO -    rowid            pl_name        hostname  ... pl_nespec pl_ntranspec pl_ndispec
-0      1        BD+20 594 b       BD+20 594  ...       0.0          0.0        0.0
-1      2        BD+20 594 b       BD+20 594  ...       0.0          0.0        0.0
-2      3        BD+20 594 b       BD+20 594  ...       0.0          0.0        0.0
-3      4  EPIC 201111557.01  EPIC 201111557  ...       0.0          0.0        0.0
-4      5  EPIC 201111557.01  EPIC 201111557  ...       0.0          0.0        0.0
-
-[5 rows x 295 columns]
-2025-09-28 02:53:32,618 - DataLoaderAndMerger - INFO - Loaded Data from data\TESS_mission_captured_data.csv
-2025-09-28 02:53:32,618 - DataLoaderAndMerger - INFO - (7668, 87)
-2025-09-28 02:53:32,618 - DataLoaderAndMerger - INFO -    rowid      toi  toipfx  ...  st_radsymerr          toi_created            rowupdate
-0      1  1000.01    1000  ...             1  2019-07-24 15:58:33  2024-09-09 10:08:01
-1      2  1001.01    1001  ...             1  2019-07-24 15:58:33  2023-04-03 14:31:04
-2      3  1002.01    1002  ...             1  2019-07-24 15:58:33  2022-07-11 16:02:02
-3      4  1003.01    1003  ...             1  2019-07-24 15:58:33  2022-02-23 10:10:02
-4      5  1004.01    1004  ...             1  2019-07-24 15:58:33  2024-09-09 10:08:01
-
-[5 rows x 87 columns]
-2025-09-28 02:53:32,662 - DataLoaderAndMerger - INFO - Merging complete. Final DataFrame shape: (21224, 16)
-2025-09-28 02:53:32,662 - DataLoaderAndMerger - INFO -       period  duration    depth  planet_radius  ...  tic planet_name host_name  toi
-0   9.488036   2.95750    615.8           2.26  ...  NaN         NaN       NaN  NaN
-1  54.418383   4.50700    874.8           2.83  ...  NaN         NaN       NaN  NaN
-2  19.899140   1.78220  10829.0          14.60  ...  NaN         NaN       NaN  NaN
-3   1.736952   2.40641   8079.2          33.46  ...  NaN         NaN       NaN  NaN
-4   2.525592   1.65450    603.3           2.75  ...  NaN         NaN       NaN  NaN
-
-[5 rows x 16 columns]
-2025-09-28 02:53:32,739 - DataLoaderAndMerger - INFO - Successfully saved merged data to data\processed\Merged_data.csv
+2025-09-29 03:34:17,974 - DataLoaderAndMerger - INFO - Successfully saved merged data to data\processed\Merged_data.csv

@@ -11,9 +11,12 @@ class Disposition(IntEnum):
 
 @dataclass
 class ModelData:
-    training_data: pd.DataFrame
-    testing_data: pd.DataFrame
-    cross_validation_data: pd.DataFrame
+    X_train: pd.DataFrame
+    y_train: pd.Series
+    X_test: pd.DataFrame
+    y_test: pd.Series
+    X_cv: pd.DataFrame
+    y_cv: pd.Series
 
 
 __all__ = ["Disposition", "ModelData"]
