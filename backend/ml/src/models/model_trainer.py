@@ -1,25 +1,210 @@
-from sklearn.model_selection import train_test_split
 import pandas as pd
-from dataclasses import dataclass
-from ..utils.entity import ModelData
+import numpy as np
+from pathlib import Path
+from typing import Tuple
+import logging
+
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers, models
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+import xgboost as xgb
+import lightgbm as lgb
+import joblib
+
+from ..utils.entity import ModelData, Disposition
+from ..utils.common import setup_logger
+
+RANDOM_STATE = 42
+LOGGER_FILE_PATH = Path("reports") / "logs" / "Model_trainer.log"
+logger = setup_logger("ModelTrainer", LOGGER_FILE_PATH)
 
 
-class ModelTrainer:
-    def __init__(self, dataframe: ModelData):
-        self.df = dataframe
+class StackedEnsembleTrainer:
+    def __init__(self, model_data: ModelData, save_folder: Path):
+        self.model_data = model_data
+        self.save_folder = save_folder
+        self.save_folder.mkdir(parents=True, exist_ok=True)
 
-        self.training_data = self.df.training_data
-        self.testing_data = self.df.testing_data
-        self.cross_validation_data = self.df.cross_validation_data
+        self.feature_scaler = StandardScaler()
+        self.xgb_model = None
+        self.lgb_model = None
+        self.mlp_model = None
+        self.meta_model = None
 
-    def train_XG(self):
-        pass
+        self.X_train_scaled = None
+        self.X_test_scaled = None
+        self.X_cv_scaled = None
 
-    def train_LGM(self):
-        pass
+    def build_xgboost_model(self):
+        logger.info("Training XGBoost model")
+        self.xgb_model = xgb.XGBClassifier(
+            n_estimators=1024,
+            max_depth=8,
+            learning_rate=0.01,
+            subsample=0.8,
+            colsample_bytree=0.8,
+            objective="multi:softmax",
+            num_class=3,
+            random_state=RANDOM_STATE,
+            eval_metric="mlogloss",
+            early_stopping_rounds=50,
+        )
 
-    def train_MLP(self):
-        pass
+        self.xgb_model.fit(
+            self.X_train_scaled,
+            self.model_data.y_train,
+            eval_set=[(self.X_cv_scaled, self.model_data.y_cv)],
+            verbose=50,
+        )
 
+        train_pred = self.xgb_model.predict(self.X_train_scaled)
+        cv_pred = self.xgb_model.predict(self.X_cv_scaled)
 
-__all__ = ["ModelData", "ModelTrainer"]
+        logger.info(
+            f"XGBoost Train Accuracy: {accuracy_score(self.model_data.y_train, train_pred):.4f}"
+        )
+        logger.info(
+            f"XGBoost CV Accuracy: {accuracy_score(self.model_data.y_cv, cv_pred):.4f}"
+        )
+
+    def build_lightgbm_model(self):
+        logger.info("Training LightGBM model")
+
+        self.lgb_model = lgb.LGBMClassifier(
+            n_estimators=1024,
+            max_depth=8,
+            learning_rate=0.01,
+            num_leaves=31,
+            subsample=0.8,
+            colsample_bytree=0.8,
+            objective="multiclass",
+            num_class=3,
+            random_state=RANDOM_STATE,
+            metric="multi_logloss",
+            verbose=-1,
+        )
+
+        self.lgb_model.fit(
+            self.X_train_scaled,
+            self.model_data.y_train,
+            eval_set=[(self.X_cv_scaled, self.model_data.y_cv)],
+            callbacks=[lgb.early_stopping(50), lgb.log_evaluation(50)],
+        )
+
+        train_pred = self.lgb_model.predict(self.X_train_scaled)
+        cv_pred = self.lgb_model.predict(self.X_cv_scaled)
+
+        logger.info(
+            f"LightGBM Train Accuracy: {accuracy_score(self.model_data.y_train, train_pred):.4f}"
+        )
+        logger.info(
+            f"LightGBM CV Accuracy: {accuracy_score(self.model_data.y_cv, cv_pred):.4f}"
+        )
+
+    def build_mlp_model(self):
+        logger.info("Training MLP model")
+
+        n_features = self.X_train_scaled.shape[1]
+        self.mlp_model = models.Sequential(
+            [
+                layers.Input(shape=(n_features,)),
+                layers.Dense(256, activation="relu"),
+                layers.BatchNormalization(),
+                layers.Dropout(0.3),
+                layers.Dense(128, activation="relu"),
+                layers.BatchNormalization(),
+                layers.Dropout(0.3),
+                layers.Dense(64, activation="relu"),
+                layers.BatchNormalization(),
+                layers.Dropout(0.2),
+                layers.Dense(32, activation="relu"),
+                layers.Dropout(0.2),
+                layers.Dense(3, activation="softmax"),
+            ]
+        )
+
+        self.mlp_model.compile(
+            optimizer=keras.optimizers.Adam(learning_rate=0.001),
+            loss="sparse_categorical_crossentropy",
+            metrics=["accuracy"],
+        )
+
+        early_stop = keras.callbacks.EarlyStopping(
+            monitor="val_loss", patience=20, restore_best_weights=True
+        )
+
+        reduce_lr = keras.callbacks.ReduceLROnPlateau(
+            monitor="val_loss", factor=0.5, patience=10, min_lr=1e-7
+        )
+
+        self.mlp_model.fit(
+            self.X_train_scaled,
+            self.model_data.y_train,
+            validation_data=(self.X_cv_scaled, self.model_data.y_cv),
+            epochs=200,
+            batch_size=64,
+            callbacks=[early_stop, reduce_lr],
+            verbose=1,
+        )
+
+        train_loss, train_acc = self.mlp_model.evaluate(
+            self.X_train_scaled, self.model_data.y_train, verbose=0
+        )
+        cv_loss, cv_acc = self.mlp_model.evaluate(
+            self.X_cv_scaled, self.model_data.y_cv, verbose=0
+        )
+
+        logger.info(f"MLP Train Accuracy: {train_acc:.4f}")
+        logger.info(f"MLP CV Accuracy: {cv_acc:.4f}")
+
+    def build_meta_model(self, meta_train: np.ndarray, meta_cv: np.ndarray):
+        logger.infor("Training meta-model")
+
+        n_meta_features = meta_train.shape[1]
+
+        self.meta_model = models.Sequential(
+            [
+                layers.Input(shape=(n_meta_features,)),
+                layers.Dense(64, activation="relu"),
+                layers.BatchNormalization(),
+                layers.Dropout(0.3),
+                layers.Dense(32, activation="relu"),
+                layers.Dropout(0.2),
+                layers.Dense(3, activation="softmax"),
+            ]
+        )
+
+        self.meta_model.compile(
+            optimizer=keras.optimizers.Adam(learning_rate=0.001),
+            loss="sparse_categorical_crossentropy",
+            metrics=["accuracy"],
+        )
+
+        early_stop = keras.callbacks.EarlyStopping(
+            monitor="val_loss", patience=30, restore_best_weights=True
+        )
+
+        self.meta_model.fit(
+            meta_train,
+            self.model_data.y_train,
+            validation_data=(meta_cv, self.model_data.y_cv),
+            epochs=200,
+            batch_size=32,
+            callbacks=[early_stop],
+            verbose=1,
+        )
+
+        train_loss, train_acc = self.meta_model.evaluate(
+            meta_train, self.model_data.y_train, verbose=0
+        )
+        cv_loss, cv_acc = self.meta_model.evaluate(
+            meta_cv, self.model_data.y_cv, verbose=0
+        )
+
+        logger.info(f"Meta-Model Train Accuracy: {train_acc:.4f}")
+        logger.info(f"Meta-Model CV Accuracy: {cv_acc:.4f}")
+
+        

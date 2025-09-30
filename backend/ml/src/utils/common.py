@@ -6,7 +6,7 @@ from pathlib import Path
 def setup_logger(name: str, log_file_path: Path) -> logging.Logger:
     log_file_path.parent.mkdir(parents=True, exist_ok=True)
 
-    file_handler = logging.FileHandler(log_file_path)
+    file_handler = logging.FileHandler(log_file_path, mode="w")
     file_handler.setLevel(logging.INFO)
 
     stream_handler = logging.StreamHandler(sys.stdout)

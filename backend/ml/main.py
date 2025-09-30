@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from src.data.data_loader_and_merger import ExoPlanetData
 from src.data.data_visualizer import EXODataVisualizer
 from src.data.data_preprocessor import DataPreprocessor
+
 load_dotenv()
 
 
@@ -22,9 +23,13 @@ def main():
         data_folder=data_folder / "processed",
     )
     df = data_loader.merge_data()
+
     data_visualizer = EXODataVisualizer(df)
     data_visualizer.visualize_data()
-    df = DataPreprocessor(df)
+
+    data_preprocessor = DataPreprocessor(df)
+    data_preprocessor.processing_pipeline()
+
 
 if __name__ == "__main__":
     main()

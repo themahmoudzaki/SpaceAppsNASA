@@ -15,7 +15,6 @@ FIGS_PATH = Path("reports") / "figures"
 FIGS_PATH.mkdir(parents=True, exist_ok=True)
 
 
-
 class EXODataVisualizer:
     def __init__(self, dataframe: pd.DataFrame):
         self.df = dataframe
@@ -28,7 +27,10 @@ class EXODataVisualizer:
         logger.info(f"DataFrame info: \n{self.df.info()}")
         logger.info(f"DataFrame describe:\n{self.df.describe()}")
         logger.info(f"DataFrame unique values:\n{self.df.nunique()}")
-
+        logger.info(f"DataFrame null value:\n{self.df.isnull().sum()}")
+        logger.info(
+            f"DataFrame null value percentage:\n{self.df.isnull().sum() / len(self.df) * 100}"
+        )
         self.df.hist(figsize=(15, 10), bins=30)
         plt.savefig(f'{FIGS_PATH / "hist"}')
 
