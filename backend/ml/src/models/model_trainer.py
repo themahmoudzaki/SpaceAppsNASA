@@ -159,3 +159,52 @@ class StackedEnsembleTrainer:
 
         logger.info(f"MLP Train Accuracy: {train_acc:.4f}")
         logger.info(f"MLP CV Accuracy: {cv_acc:.4f}")
+
+    def build_meta_model(self, meta_train: np.ndarray, meta_cv: np.ndarray):
+        logger.infor("Training meta-model")
+
+        n_meta_features = meta_train.shape[1]
+
+        self.meta_model = models.Sequential(
+            [
+                layers.Input(shape=(n_meta_features,)),
+                layers.Dense(64, activation="relu"),
+                layers.BatchNormalization(),
+                layers.Dropout(0.3),
+                layers.Dense(32, activation="relu"),
+                layers.Dropout(0.2),
+                layers.Dense(3, activation="softmax"),
+            ]
+        )
+
+        self.meta_model.compile(
+            optimizer=keras.optimizers.Adam(learning_rate=0.001),
+            loss="sparse_categorical_crossentropy",
+            metrics=["accuracy"],
+        )
+
+        early_stop = keras.callbacks.EarlyStopping(
+            monitor="val_loss", patience=30, restore_best_weights=True
+        )
+
+        self.meta_model.fit(
+            meta_train,
+            self.model_data.y_train,
+            validation_data=(meta_cv, self.model_data.y_cv),
+            epochs=200,
+            batch_size=32,
+            callbacks=[early_stop],
+            verbose=1,
+        )
+
+        train_loss, train_acc = self.meta_model.evaluate(
+            meta_train, self.model_data.y_train, verbose=0
+        )
+        cv_loss, cv_acc = self.meta_model.evaluate(
+            meta_cv, self.model_data.y_cv, verbose=0
+        )
+
+        logger.info(f"Meta-Model Train Accuracy: {train_acc:.4f}")
+        logger.info(f"Meta-Model CV Accuracy: {cv_acc:.4f}")
+
+        

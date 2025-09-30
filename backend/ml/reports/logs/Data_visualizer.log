@@ -1,96 +1,72 @@
-2025-09-29 04:14:30,979 - DataVisualizer - INFO - DataFrame shape: (21224, 16)
-2025-09-29 04:14:30,980 - DataVisualizer - INFO - DataFrame dtypes:
+2025-10-01 00:30:46,586 - DataVisualizer - INFO - DataFrame shape: (21267, 10)
+2025-10-01 00:30:46,587 - DataVisualizer - INFO - DataFrame dtypes:
 period             float64
 duration           float64
 depth              float64
 planet_radius      float64
-kepid              float64
-koi                 object
 disposition         object
 semi_major_axis    float64
 source              object
 star_radius        float64
 teff               float64
 logg               float64
-tic                 object
-planet_name         object
-host_name           object
-toi                float64
 dtype: object
-2025-09-29 04:14:30,987 - DataVisualizer - INFO - DataFrame head:
-      period  duration    depth  planet_radius       kepid        koi  ... teff  logg  tic  planet_name  host_name  toi
-0   9.488036   2.95750    615.8           2.26  10797460.0  K00752.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
-1  54.418383   4.50700    874.8           2.83  10797460.0  K00752.02  ...  NaN   NaN  NaN          NaN        NaN  NaN
-2  19.899140   1.78220  10829.0          14.60  10811496.0  K00753.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
-3   1.736952   2.40641   8079.2          33.46  10848459.0  K00754.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
-4   2.525592   1.65450    603.3           2.75  10854555.0  K00755.01  ...  NaN   NaN  NaN          NaN        NaN  NaN
+2025-10-01 00:30:46,592 - DataVisualizer - INFO - DataFrame head:
+      period  duration    depth  planet_radius  ...  source  star_radius teff  logg
+0   9.488036   2.95750    615.8           2.26  ...  Kepler          NaN  NaN   NaN
+1  54.418383   4.50700    874.8           2.83  ...  Kepler          NaN  NaN   NaN
+2  19.899140   1.78220  10829.0          14.60  ...  Kepler          NaN  NaN   NaN
+3   1.736952   2.40641   8079.2          33.46  ...  Kepler          NaN  NaN   NaN
+4   2.525592   1.65450    603.3           2.75  ...  Kepler          NaN  NaN   NaN
 
-[5 rows x 16 columns]
-2025-09-29 04:14:30,991 - DataVisualizer - INFO - DataFrame info: 
+[5 rows x 10 columns]
+2025-10-01 00:30:46,595 - DataVisualizer - INFO - DataFrame info: 
 None
-2025-09-29 04:14:31,005 - DataVisualizer - INFO - DataFrame describe:
-              period      duration         depth  planet_radius  ...   star_radius          teff         logg          toi
-count   21051.000000  12320.000000  9.201000e+03   19514.000000  ...  11009.000000  10373.000000  9148.000000  7668.000000
-mean       48.342558      5.086007  2.379134e+04      53.670676  ...      1.324680   5609.734357     4.338540  3731.951026
-std      1073.583587      5.890517  8.224268e+04    2113.796247  ...      1.926614   1448.988139     0.314180  2142.315067
-min         0.152076     -0.068000  0.000000e+00       0.080000  ...      0.110000   2520.000000     0.100000   101.010000
-25%         2.626698      2.271090  1.599000e+02       1.900000  ...      0.790000   4985.000000     4.160000  1852.760000
-50%         5.850824      3.492450  4.211000e+02       3.940000  ...      1.080000   5660.000000     4.372375  3718.510000
-75%        16.347230      5.620698  1.473400e+03      13.385078  ...      1.540000   6155.000000     4.540000  5590.260000
-max    129995.778400    138.540000  1.541400e+06  200346.000000  ...    102.030000  50000.000000     5.960650  7475.010000
+2025-10-01 00:30:46,607 - DataVisualizer - INFO - DataFrame describe:
+              period      duration  ...          teff         logg
+count   21093.000000  12331.000000  ...  10415.000000  9190.000000
+mean       48.253231      5.084908  ...   5609.058663     4.338638
+std      1072.515878      5.888256  ...   1447.861830     0.313849
+min         0.152076     -0.068000  ...   2520.000000     0.100000
+25%         2.628117      2.272250  ...   4989.300000     4.160000
+50%         5.838930      3.493000  ...   5659.000000     4.372830
+75%        16.303675      5.618700  ...   6153.000000     4.540000
+max    129995.778400    138.540000  ...  50000.000000     5.960650
 
-[8 rows x 10 columns]
-2025-09-29 04:14:31,011 - DataVisualizer - INFO - DataFrame unique values:
-period             20848
-duration            8987
+[8 rows x 8 columns]
+2025-10-01 00:30:46,610 - DataVisualizer - INFO - DataFrame unique values:
+period             20890
+duration            8998
 depth               6947
-planet_radius      11142
-kepid               8214
-koi                 9564
+planet_radius      11179
 disposition            4
 semi_major_axis     3999
 source                 3
-star_radius         4004
-teff                5168
-logg                2552
-tic                 1557
-planet_name         1806
-host_name           1560
-toi                 7668
+star_radius         4031
+teff                5175
+logg                2573
 dtype: int64
-2025-09-29 04:14:31,014 - DataVisualizer - INFO - DataFrame null value:
-period               173
-duration            8904
-depth              12023
-planet_radius       1710
-kepid              11660
-koi                11660
-disposition         7668
-semi_major_axis    11211
+2025-10-01 00:30:46,611 - DataVisualizer - INFO - DataFrame null value:
+period               174
+duration            8936
+depth              12066
+planet_radius       1714
+disposition         7699
+semi_major_axis    11254
 source                 0
-star_radius        10215
-teff               10851
-logg               12076
-tic                17236
-planet_name        17232
-host_name          17232
-toi                13556
+star_radius        10219
+teff               10852
+logg               12077
 dtype: int64
-2025-09-29 04:14:31,017 - DataVisualizer - INFO - DataFrame null value percentage:
-period              0.815115
-duration           41.952507
-depth              56.648134
-planet_radius       8.056917
-kepid              54.937806
-koi                54.937806
-disposition        36.128911
-semi_major_axis    52.822277
+2025-10-01 00:30:46,613 - DataVisualizer - INFO - DataFrame null value percentage:
+period              0.818169
+duration           42.018150
+depth              56.735788
+planet_radius       8.059435
+disposition        36.201627
+semi_major_axis    52.917666
 source              0.000000
-star_radius        48.129476
-teff               51.126084
-logg               56.897851
-tic                81.209951
-planet_name        81.191104
-host_name          81.191104
-toi                63.871089
+star_radius        48.050971
+teff               51.027413
+logg               56.787511
 dtype: float64

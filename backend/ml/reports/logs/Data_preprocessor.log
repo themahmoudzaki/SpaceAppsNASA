@@ -1,0 +1,23 @@
+2025-10-01 00:30:47,144 - DataPreprocessor - INFO - Initial shape: (21267, 10)
+2025-10-01 00:30:47,145 - DataPreprocessor - INFO - Missing values per column:
+period               174
+duration            8936
+depth              12066
+planet_radius       1714
+disposition         7699
+semi_major_axis    11254
+source                 0
+star_radius        10219
+teff               10852
+logg               12077
+dtype: int64
+2025-10-01 00:30:47,147 - DataPreprocessor - INFO - After removing rows with missing target: (13568, 10)
+2025-10-01 00:30:54,548 - DataPreprocessor - INFO - Applied knn imputation for numeric columns
+2025-10-01 00:30:54,550 - DataPreprocessor - INFO - Applied mode imputation for categorical columns
+2025-10-01 00:30:54,551 - DataPreprocessor - INFO - Final shape after imputation: (13568, 10)
+2025-10-01 00:30:54,551 - DataPreprocessor - INFO - Remaining missing values: 0
+2025-10-01 00:30:54,565 - DataPreprocessor - INFO - Data split - Train: (9497, 9), Test: (2035, 9), CV: (2036, 9)
+2025-10-01 00:30:54,565 - DataPreprocessor - INFO - Class distribution - Train: {'FALSE POSITIVE': 3592, 'CONFIRMED': 3543, 'CANDIDATE': 2347, 'REFUTED': 15}
+2025-10-01 00:30:54,566 - DataPreprocessor - INFO - Class distribution - Test: {'FALSE POSITIVE': 770, 'CONFIRMED': 759, 'CANDIDATE': 503, 'REFUTED': 3}
+2025-10-01 00:30:54,566 - DataPreprocessor - INFO - Class distribution - CV: {'FALSE POSITIVE': 770, 'CONFIRMED': 759, 'CANDIDATE': 503, 'REFUTED': 4}
+2025-10-01 00:30:54,567 - DataPreprocessor - INFO - Preprocessing pipeline complete!

@@ -23,12 +23,15 @@ TARGET_FEATURES = {
     "snr": ["snr", "mes", "model_snr"],
     "teff": ["st_teff", "teff"],
     "logg": ["st_logg", "logg"],
-    "kepid": ["kepid"],
-    "koi": ["kepoi_name", "koi", "koi_name", "koi_id"],
-    "tic": ["tic", "tic_id", "ticid"],
-    "toi": ["toi", "toi_id"],
-    "planet_name": ["pl_name", "planet_name"],
-    "host_name": ["hostname", "host_name"],
+
+    ### Removed but kept for future reference
+    # "kepid": ["kepid"],
+    # "koi": ["kepoi_name", "koi", "koi_name", "koi_id"],
+    # "tic": ["tic", "tic_id", "ticid"],
+    # "toi": ["toi", "toi_id"],
+    # "planet_name": ["pl_name", "planet_name"],
+    # "host_name": ["hostname", "host_name"],
+    
     "disposition": ["koi_disposition", "disposition", "koi_pdisposition"],
     "semi_major_axis": ["sma", "koi_sma", "pl_orbsmax", "pl_orbsma"],
 }
