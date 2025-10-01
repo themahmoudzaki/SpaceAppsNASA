@@ -1,5 +1,5 @@
-2025-10-01 00:30:46,586 - DataVisualizer - INFO - DataFrame shape: (21267, 10)
-2025-10-01 00:30:46,587 - DataVisualizer - INFO - DataFrame dtypes:
+2025-10-02 00:51:17,268 - DataVisualizer - INFO - DataFrame shape: (21267, 10)
+2025-10-02 00:51:17,268 - DataVisualizer - INFO - DataFrame dtypes:
 period             float64
 duration           float64
 depth              float64
@@ -11,7 +11,7 @@ star_radius        float64
 teff               float64
 logg               float64
 dtype: object
-2025-10-01 00:30:46,592 - DataVisualizer - INFO - DataFrame head:
+2025-10-02 00:51:17,277 - DataVisualizer - INFO - DataFrame head:
       period  duration    depth  planet_radius  ...  source  star_radius teff  logg
 0   9.488036   2.95750    615.8           2.26  ...  Kepler          NaN  NaN   NaN
 1  54.418383   4.50700    874.8           2.83  ...  Kepler          NaN  NaN   NaN
@@ -20,21 +20,21 @@ dtype: object
 4   2.525592   1.65450    603.3           2.75  ...  Kepler          NaN  NaN   NaN
 
 [5 rows x 10 columns]
-2025-10-01 00:30:46,595 - DataVisualizer - INFO - DataFrame info: 
+2025-10-02 00:51:17,281 - DataVisualizer - INFO - DataFrame info: 
 None
-2025-10-01 00:30:46,607 - DataVisualizer - INFO - DataFrame describe:
-              period      duration  ...          teff         logg
-count   21093.000000  12331.000000  ...  10415.000000  9190.000000
-mean       48.253231      5.084908  ...   5609.058663     4.338638
-std      1072.515878      5.888256  ...   1447.861830     0.313849
-min         0.152076     -0.068000  ...   2520.000000     0.100000
-25%         2.628117      2.272250  ...   4989.300000     4.160000
-50%         5.838930      3.493000  ...   5659.000000     4.372830
-75%        16.303675      5.618700  ...   6153.000000     4.540000
-max    129995.778400    138.540000  ...  50000.000000     5.960650
+2025-10-02 00:51:17,295 - DataVisualizer - INFO - DataFrame describe:
+              period      duration         depth  ...   star_radius          teff         logg
+count   21093.000000  12331.000000  9.201000e+03  ...  11048.000000  10415.000000  9190.000000
+mean       48.253231      5.084908  2.379134e+04  ...      1.324516   5609.058663     4.338638
+std      1072.515878      5.888256  8.224268e+04  ...      1.923775   1447.861830     0.313849
+min         0.152076     -0.068000  0.000000e+00  ...      0.110000   2520.000000     0.100000
+25%         2.628117      2.272250  1.599000e+02  ...      0.790000   4989.300000     4.160000
+50%         5.838930      3.493000  4.211000e+02  ...      1.080000   5659.000000     4.372830
+75%        16.303675      5.618700  1.473400e+03  ...      1.540000   6153.000000     4.540000
+max    129995.778400    138.540000  1.541400e+06  ...    102.030000  50000.000000     5.960650
 
 [8 rows x 8 columns]
-2025-10-01 00:30:46,610 - DataVisualizer - INFO - DataFrame unique values:
+2025-10-02 00:51:17,298 - DataVisualizer - INFO - DataFrame unique values:
 period             20890
 duration            8998
 depth               6947
@@ -46,7 +46,7 @@ star_radius         4031
 teff                5175
 logg                2573
 dtype: int64
-2025-10-01 00:30:46,611 - DataVisualizer - INFO - DataFrame null value:
+2025-10-02 00:51:17,300 - DataVisualizer - INFO - DataFrame null value:
 period               174
 duration            8936
 depth              12066
@@ -58,7 +58,7 @@ star_radius        10219
 teff               10852
 logg               12077
 dtype: int64
-2025-10-01 00:30:46,613 - DataVisualizer - INFO - DataFrame null value percentage:
+2025-10-02 00:51:17,301 - DataVisualizer - INFO - DataFrame null value percentage:
 period              0.818169
 duration           42.018150
 depth              56.735788

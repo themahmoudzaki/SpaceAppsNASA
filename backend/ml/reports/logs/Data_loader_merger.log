@@ -1,5 +1,8 @@
-2025-10-01 00:30:46,426 - DataLoaderAndMerger - INFO - Successfully loaded data from data\kepler_captured_data.csv with shape (9564, 141)
-2025-10-01 00:30:46,489 - DataLoaderAndMerger - INFO - Successfully loaded data from data\K2_mission_captured_data.csv with shape (4004, 295)
-2025-10-01 00:30:46,531 - DataLoaderAndMerger - INFO - Successfully loaded data from data\TESS_mission_captured_data.csv with shape (7699, 87)
-2025-10-01 00:30:46,533 - DataLoaderAndMerger - INFO - Merging complete. Final DataFrame shape: (21267, 10)
-2025-10-01 00:30:46,586 - DataLoaderAndMerger - INFO - Successfully saved merged data to data\processed\Merged_data.csv
+2025-10-02 00:51:17,090 - DataLoaderAndMerger - INFO - Successfully loaded data from data\Kepler_captured_data.csv with shape (9564, 141)
+2025-10-02 00:51:17,160 - DataLoaderAndMerger - INFO - Successfully loaded data from data\K2_mission_captured_data.csv with shape (4004, 295)
+2025-10-02 00:51:17,205 - DataLoaderAndMerger - INFO - Successfully loaded data from data\TESS_mission_captured_data.csv with shape (7699, 87)
+2025-10-02025-10-02 00:51:17,267 - Main - INFO - 
+[STEP 2/5] Generating visualizations...
+2025-10-02 00:51:18,027 - Main - INFO - Visualizations saved to: reports/figures/
+2025-10-02 00:51:18,028 - Main - INFO - 
+[STEP 3/5] Preprocessing data...
