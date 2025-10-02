@@ -1,13 +1,15 @@
-from django.shortcuts import render
-# Create your views here.
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, AllowAny
+
+from django.contrib.auth.models import User
+
 from . import models
 from . import serializers
-from rest_framework import status
-from rest_framework.response import Response
-from django.contrib.auth.models import User
 from .serializers import UserSerializer
-from rest_framework.views import APIView
+from .services.predictor import get_service
+
 class ExoPlanetDataView(generics.ListCreateAPIView):
     queryset = models.ExoPlanetData.objects.all()
     serializer_class = serializers.ExoPlanetDataSerializer
@@ -28,37 +30,58 @@ class SignUpView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            user = User.objects.create_user(
+            User.objects.create_user(
                 username=serializer.validated_data["username"],
                 email=serializer.validated_data.get("email", ""),
-                password=serializer.validated_data["password"]  # hashed automatically
+                password=serializer.validated_data["password"]
             )
             return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .services.predictor import get_service
+def do_prediction(request):
+    """
+    Shared prediction logic for both authenticated and public endpoints.
+    Accepts 'features' key (list or list of lists for batch).
+    """
+    features = request.data.get("features")
+    if not features:
+        return Response({"error": "Missing 'features' in request body"},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        service = get_service()
+        # Accepts list (single) or list of lists (batch)
+        if isinstance(features[0], (float, int)):
+            # Single prediction
+            result = service.predict_single(features)
+        else:
+            # Batch prediction
+            result = service.predict_batch(features)
+        return Response(result, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class PredictView(APIView):
+    """
+    Prediction endpoint requiring JWT authentication.
+    """
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
-        try:
-            features = request.data.get("features")
-            if not features:
-                return Response({"error": "Missing 'features' in request body"},
-                                status=status.HTTP_400_BAD_REQUEST)
+        return do_prediction(request)
 
-            service = get_service()  # lazy load
-            result = service.predict_single(features)
+class PublicPredictView(APIView):
+    """
+    Public prediction endpoint. No authentication required.
+    Browsable in the DRF API UI.
+    """
+    permission_classes = [AllowAny]
 
-            return Response(result, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"error": str(e)},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+    def post(self, request):
+        return do_prediction(request)
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
