@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exo X Hunter - AI Exoplanet Discovery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --background-start: #231E39;
+        --background-end: #0F0C1E;
+        --primary-surface: #2E284D;
+        --secondary-surface: rgba(46, 40, 77, 0.5);
+        --accent-lavender: #C4B5FD;
+        --accent-purple: #A78BFA;
+        --accent-glow: #D8B4FE;
+        --accent-yellow: #FACC15;
+        --text-light: #F1F5F9;
+        --text-muted: #A1A1AA;
+        --border-color: rgba(196, 181, 253, 0.2);
+        --shadow-color: rgba(167, 139, 250, 0.3);
+      }
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--background-start);
+        background-image: linear-gradient(180deg, var(--background-start) 0%, var(--background-end) 100%);
+        color: var(--text-light);
+        overflow-x: hidden;
+      }
+      .font-orbitron {
+        font-family: 'Orbitron', sans-serif;
+      }
+       .font-inter {
+        font-family: 'Inter', sans-serif;
+      }
+      
+      .lavender-shadow {
+        box-shadow: 0 10px 25px -5px var(--shadow-color), 0 8px 10px -6px var(--shadow-color);
+      }
+      
+      .lavender-glow {
+        box-shadow: 0 0 15px var(--accent-glow), 0 0 25px var(--accent-glow);
+      }
+      
+      .background-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background-image: url('https://w.wallhaven.cc/full/zy/wallhaven-zygeko.png');
+        background-size: cover;
+        background-position: center;
+        opacity: 0.15;
+      }
+
+      /* Card flip animation */
+      .card-flip-container {
+        perspective: 1000px;
+      }
+      .card-flipper {
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+        width: 100%;
+        height: 100%;
+      }
+      .card-flip-container:hover .card-flipper {
+        transform: rotateY(180deg);
+      }
+      .card-front, .card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+      }
+      .card-back {
+        transform: rotateY(180deg);
+      }
+
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "recharts": "https://aistudiocdn.com/recharts@^3.2.1",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.21.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "framer-motion": "https://aistudiocdn.com/framer-motion@^11.3.19",
+    "gsap": "https://aistudiocdn.com/gsap@^3.12.5"
+  }
+}
+</script>
+</head>
+  <body class="text-[var(--text-light)]">
+    <div class="background-container"></div>
+    <div id="root" class="relative z-10"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
