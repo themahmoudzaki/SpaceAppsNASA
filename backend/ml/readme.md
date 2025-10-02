@@ -249,7 +249,7 @@ This system is designed for the NASA Space Apps Competition. Key highlights:
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - NASA for providing exoplanet datasets
 - NASA Space Apps Competition organizers

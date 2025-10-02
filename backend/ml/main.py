@@ -5,7 +5,9 @@ from pathlib import Path
 from src.data.data_loader_and_merger import ExoPlanetData
 from src.data.data_visualizer import EXODataVisualizer
 from src.data.data_preprocessor import DataPreprocessor
+from src.models.model_trainer import StackedEnsembleTrainer
 from src.utils.common import setup_logger
+
 
 load_dotenv()
 
@@ -17,6 +19,8 @@ def main():
     logger.info("=" * 80)
     logger.info("EXOPLANET CLASSIFICATION PIPELINE - NASA SPACE APPS COMPETITION")
     logger.info("=" * 80)
+
+    models_folder = Path("models")
 
     data_folder = Path("data")
     processed_data_folder = data_folder / "processed"
@@ -48,8 +52,39 @@ def main():
     data_preprocessor = DataPreprocessor(
         dataframe=df, data_folder=processed_data_folder, imputation_strategy="knn"
     )
-    data_preprocessor.processing_pipeline()
+    model_data = data_preprocessor.processing_pipeline()
+
+    logger.info("\n[STEP 4/5] Training stacked ensemble model...")
+    logger.info("Base models: XGBoost + LightGBM + MLP")
+    logger.info("Meta-model: Neural Network")
+
+    trainer = StackedEnsembleTrainer(model_data=model_data, save_folder=models_folder)
+
+    results = trainer.train_pipeline()
+
+    logger.info("\n[STEP 5/5] Final Results")
+    logger.info("=" * 80)
+
+    logger.info(f"Test Accuracy: {results['test_accuracy']:.4f}")
+    logger.info(f"\nClassification Report:\n{results['classification_report']}")
+    logger.info(f"\nConfusion Matrix:\n{results['confusion_matrix']}")
+
+    logger.info("\n" + "=" * 80)
+    logger.info("PIPELINE COMPLETE!")
+
+    logger.info("=" * 80)
+    logger.info(f"Models saved to: {models_folder}")
+    logger.info(f"Processed data saved to: {processed_data_folder}")
+    logger.info(f"Logs saved to: reports/logs/")
+    logger.info(f"Figures saved to: reports/figures/")
+
+    return results
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+        print("Pipeline Executed")
+    except Exception as e:
+        logger.error(f"Pipeline failed with error: {e}", exc_info=True)
+        raise

@@ -149,12 +149,24 @@ class DataPreprocessor:
         logger.info(f"Saved processed data to {data_folder}")
 
     def processing_pipeline(self) -> ModelData:
-        clean_df = self.handle_missing_values(self.df)
+        dataframe = self.df.copy()
+        dataframe["disposition"] = dataframe["disposition"].str.strip()
+        valid_labels = ["CONFIRMED", "CANDIDATE", "FALSE POSITIVE"]
+
+        initial_rows = len(dataframe)
+        clean_df = dataframe[dataframe["disposition"].isin(valid_labels)].copy()
+        rows_removed = initial_rows - len(clean_df)
+        if rows_removed > 0:
+            logger.warning(
+                f"Removed {rows_removed} rows with invalid 'disposition' labels."
+            )
+
+        clean_df = self.handle_missing_values(clean_df)
 
         y_unencoded = clean_df["disposition"]
         y_encoded = self._encode_target_variable(y_unencoded)
 
-        X = clean_df.drop(columns=["disposition"])
+        X = clean_df.drop(columns=["disposition", "source"])
 
         X_train, y_train_unencoded, X_test, y_test_unencoded, X_cv, y_cv_unencoded = (
             self.split_data(X, y_unencoded)

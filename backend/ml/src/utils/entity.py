@@ -9,6 +9,12 @@ class Disposition(IntEnum):
     CONFIRMED = 2
 
 
+class Source(IntEnum):
+    K2 = 0
+    KEPLER = 1
+    TESS = 2
+
+
 @dataclass
 class ModelData:
     X_train: pd.DataFrame
@@ -19,4 +25,4 @@ class ModelData:
     y_cv: pd.Series
 
 
-__all__ = ["Disposition", "ModelData"]
+__all__ = ["Disposition", "Source", "ModelData"]

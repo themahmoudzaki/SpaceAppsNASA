@@ -38,6 +38,16 @@ class StackedEnsembleTrainer:
         self.X_test_scaled = None
         self.X_cv_scaled = None
 
+    def preprocess_features(self):
+        logger.info("Scaling features")
+
+        self.X_train_scaled = self.feature_scaler.fit_transform(self.model_data.X_train)
+        self.X_test_scaled = self.feature_scaler.transform(self.model_data.X_test)
+        self.X_cv_scaled = self.feature_scaler.transform(self.model_data.X_cv)
+
+        joblib.dump(self.feature_scaler, self.save_folder / "feature_scaler.pkl")
+        logger.info("Feature scaling complete")
+
     def build_xgboost_model(self):
         logger.info("Training XGBoost model")
         self.xgb_model = xgb.XGBClassifier(
@@ -160,8 +170,31 @@ class StackedEnsembleTrainer:
         logger.info(f"MLP Train Accuracy: {train_acc:.4f}")
         logger.info(f"MLP CV Accuracy: {cv_acc:.4f}")
 
+    def generate_meta_features(self) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        logging.info("Generate meta-features")
+
+        xgb_train_proba = self.xgb_model.predict_proba(self.X_train_scaled)
+        xgb_cv_proba = self.xgb_model.predict_proba(self.X_cv_scaled)
+        xgb_test_proba = self.xgb_model.predict_proba(self.X_test_scaled)
+
+        lgb_train_proba = self.lgb_model.predict_proba(self.X_train_scaled)
+        lgb_cv_proba = self.lgb_model.predict_proba(self.X_cv_scaled)
+        lgb_test_proba = self.lgb_model.predict_proba(self.X_test_scaled)
+
+        mlp_train_proba = self.mlp_model.predict(self.X_train_scaled)
+        mlp_cv_proba = self.mlp_model.predict(self.X_cv_scaled)
+        mlp_test_proba = self.mlp_model.predict(self.X_test_scaled)
+
+        meta_train = np.hstack([xgb_train_proba, lgb_train_proba, mlp_train_proba])
+        meta_cv = np.hstack([xgb_cv_proba, lgb_cv_proba, mlp_cv_proba])
+        meta_test = np.hstack([xgb_test_proba, lgb_test_proba, mlp_test_proba])
+
+        logger.info(f"Meta-features shape: {meta_train.shape}")
+
+        return meta_train, meta_cv, meta_test
+
     def build_meta_model(self, meta_train: np.ndarray, meta_cv: np.ndarray):
-        logger.infor("Training meta-model")
+        logger.info("Training meta-model")
 
         n_meta_features = meta_train.shape[1]
 
@@ -207,4 +240,87 @@ class StackedEnsembleTrainer:
         logger.info(f"Meta-Model Train Accuracy: {train_acc:.4f}")
         logger.info(f"Meta-Model CV Accuracy: {cv_acc:.4f}")
 
-        
+    def evaluate_ensemble(self, meta_test: np.ndarray):
+        logger.info("Evaluating stacked ensemble")
+
+        test_pred = np.argmax(self.meta_model.predict(meta_test), axis=1)
+
+        test_acc = accuracy_score(self.model_data.y_test, test_pred)
+        logger.info(f"\nStacked Ensemble Test Accuracy: {test_acc:.4f}")
+
+        report = classification_report(
+            self.model_data.y_test,
+            test_pred,
+            target_names=["FALSE_POSITIVE", "CANDIDATE", "CONFIRMED"],
+        )
+        logger.info(f"\nClassification Report:\n{report}")
+
+        cm = confusion_matrix(self.model_data.y_test, test_pred)
+        logger.info(f"\nConfusion Matrix:\n{cm}")
+
+        return test_acc, report, cm
+
+    def save_models(self):
+        logger.info("Saving stacked ensemble models")
+
+        model_dir = self.save_folder
+        model_dir.mkdir(parents=True, exist_ok=True)
+
+        joblib.dump(self.feature_scaler, model_dir / "feature_scaler.pkl")
+        logger.info("Saved feature scaler")
+
+        joblib.dump(self.xgb_model, model_dir / "xgboost_model.pkl")
+        logger.info("Saved XGBoost model")
+
+        joblib.dump(self.lgb_model, model_dir / "lightgbm_model.pkl")
+        logger.info("Saved LightGBM model")
+
+        self.mlp_model.save(model_dir / "mlp_model.keras")
+        logger.info("Saved MLP model")
+
+        self.meta_model.save(model_dir / "meta_model.keras")
+        logger.info("Saved meta-model")
+
+        ensemble_info = {
+            "version": "1.0",
+            "n_features": self.X_train_scaled.shape[1],
+            "class_names": ["FALSE_POSITIVE", "CANDIDATE", "CONFIRMED"],
+            "training_date": pd.Timestamp.now().isoformat(),
+        }
+        joblib.dump(ensemble_info, model_dir / "ensemble_info.pkl")
+        logger.info("Saved ensemble metadata")
+
+        logger.info(f"All models saved successfully to: {model_dir}")
+        logger.info("\nSaved files:")
+        for file in sorted(model_dir.glob("*")):
+            size_mb = file.stat().st_size / (1024 * 1024)
+            logger.info(f"  - {file.name} ({size_mb:.2f} MB)")
+
+    def train_pipeline(self):
+        """Execute complete training pipeline."""
+        logger.info("Starting stacked ensemble training pipeline...")
+
+        self.preprocess_features()
+
+        self.build_xgboost_model()
+        self.build_lightgbm_model()
+        self.build_mlp_model()
+
+        meta_train, meta_cv, meta_test = self.generate_meta_features()
+
+        self.build_meta_model(meta_train, meta_cv)
+
+        test_acc, report, cm = self.evaluate_ensemble(meta_test)
+
+        self.save_models()
+
+        logger.info("Training pipeline complete!")
+
+        return {
+            "test_accuracy": test_acc,
+            "classification_report": report,
+            "confusion_matrix": cm,
+        }
+
+
+__all__ = ["StackedEnsembleTrainer"]
