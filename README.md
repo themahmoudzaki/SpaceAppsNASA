@@ -34,8 +34,8 @@ The app is fully **containerized with Docker**, making it easy to run locally or
 ### Components:
 
 1. **Machine Learning Core** – preprocesses NASA mission data and trains the stacking ensemble (XGBoost, LightGBM, MLP).
-2. **Backend (Python / FastAPI or Django)** – serves the trained ML model via a REST API.
-3. **Frontend (React / Vue)** – interactive UI for data upload, visualization, and classification results.
+2. **Backend (Python /  Django)** – serves the trained ML model via a REST API.
+3. **Frontend (React)** – interactive UI for data upload, visualization, and classification results.
 
 ---
 
@@ -135,19 +135,6 @@ exo-x-hunter/
 │── README.md            # Documentation
 │── LICENSE
 ```
-
----
-
-## 🛠️ Implementation Status
-
-* ✅ Dockerized backend (Django/FastAPI)
-* ✅ REST API for predictions
-* ✅ Frontend (React + Nginx) with Docker support
-* ✅ ML pipeline (preprocessing + training + stacking ensemble)
-* ✅ One-click startup scripts (`start.bat`, `start.sh`)
-* 🚧 Model optimization & hyperparameter tuning
-* 🚧 Advanced visualizations (interactive light curves, probability graphs)
-* 🚧 Cloud deployment (AWS/GCP/Azure)
 
 ---
 
