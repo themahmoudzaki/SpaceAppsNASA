@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useMockData } from '../../hooks/useMockData';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
@@ -13,6 +13,64 @@ const discoveryData = [
 interface AdultZoneProps {
     onArticleSelect: (articleId: string) => void;
 }
+
+const ChevronDownIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+    </svg>
+);
+
+const AccordionItem: React.FC<{ title: string; content: string }> = ({ title, content }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+        <div className="border-b border-[var(--border-color)] last:border-b-0">
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-[var(--text-light)] hover:bg-white/5 transition-colors"
+                aria-expanded={isOpen}
+            >
+                <span className="flex-1 pr-4">{title}</span>
+                <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                    <ChevronDownIcon className="w-6 h-6 text-[var(--text-muted)]" />
+                </motion.div>
+            </button>
+            <AnimatePresence initial={false}>
+                {isOpen && (
+                    <motion.div
+                        key="content"
+                        initial="collapsed"
+                        animate="open"
+                        exit="collapsed"
+                        variants={{
+                            open: { opacity: 1, height: 'auto' },
+                            collapsed: { opacity: 0, height: 0 }
+                        }}
+                        transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                        className="overflow-hidden"
+                    >
+                        <p className="p-5 pt-0 text-[var(--text-muted)] leading-relaxed">{content}</p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+};
+
+const advancedTopics = [
+    {
+        title: "Stellar Characterization: Know the Star, Know the Planet",
+        content: "An exoplanet's properties are all relative to its host star. A planet's size is determined by how much light it blocks during a transit, which is a ratio of its size to the star's. Its mass is found by the 'wobble' it induces in the star. Therefore, accurately measuring the star's mass, radius, and temperature is the critical first step in understanding any world orbiting it."
+    },
+    {
+        title: "Detection Biases: What We Can and Can't See",
+        content: "Our methods have inherent biases. The Transit Method is more likely to find large planets orbiting close to small stars. The Radial Velocity method is more sensitive to massive planets orbiting close to their stars. This means the thousands of planets we've found might not represent the true diversity of the galaxy, but rather the 'low-hanging fruit' that our current technology can easily detect."
+    },
+    {
+        title: "Atmospheric Spectroscopy: Reading Alien Atmospheres",
+        content: "Using powerful telescopes like the James Webb Space Telescope (JWST), scientists can analyze the starlight that passes through an exoplanet's atmosphere during a transit. Different molecules (like water, methane, or CO2) absorb specific wavelengths of light, leaving a unique chemical 'fingerprint'. This technique, called transmission spectroscopy, is our best tool for searching for biosignatures—signs of life—on other worlds."
+    }
+];
+
 
 const AdultZone: React.FC<AdultZoneProps> = ({ onArticleSelect }) => {
     const { dashboardData, initialPlanets, articles } = useMockData();
@@ -105,6 +163,21 @@ const AdultZone: React.FC<AdultZoneProps> = ({ onArticleSelect }) => {
                     </motion.div>
                 </div>
             </div>
+
+            <motion.div
+                className="mt-16"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                viewport={{ once: true, amount: 0.2 }}
+            >
+                <h2 className="font-orbitron text-3xl font-bold text-[var(--accent-lavender)] mb-6 text-center">Advanced Topics</h2>
+                <div className="max-w-4xl mx-auto bg-[var(--primary-surface)] rounded-2xl border border-[var(--border-color)] overflow-hidden">
+                    {advancedTopics.map((topic, index) => (
+                        <AccordionItem key={index} title={topic.title} content={topic.content} />
+                    ))}
+                </div>
+            </motion.div>
         </div>
     );
 }

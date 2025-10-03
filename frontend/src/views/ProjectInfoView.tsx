@@ -1,6 +1,5 @@
 import React from 'react';
-import { motion} from 'framer-motion';
-import type{ Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const infoItems = [
     {
@@ -17,28 +16,14 @@ const infoItems = [
     }
 ];
 
-const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 50, scale: 0.95 },
-    visible: { 
-        opacity: 1, 
-        y: 0, 
-        scale: 1,
-        transition: { duration: 0.6, ease: 'easeOut' }
-    }
-}
-
 const ProjectInfoView: React.FC = () => {
     return (
-        <section className="py-20 sm:py-32">
+        <section className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {infoItems.map((item, index) => (
                     <motion.div 
                         key={index}
                         className="bg-[var(--secondary-surface)] backdrop-blur-sm p-8 rounded-2xl border border-[var(--border-color)] h-full"
-                        variants={cardVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.3 }}
                         whileHover={{ y: -8, boxShadow: "0 15px 25px -5px var(--shadow-color)" }}
                         transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >

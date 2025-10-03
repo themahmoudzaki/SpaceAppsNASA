@@ -7,47 +7,53 @@ import ProjectInfoView from '../views/ProjectInfoView';
 import DashboardView from '../views/DashboardView';
 import GalleryView from '../views/GalleryView';
 import EducationView from '../views/EducationView';
+import ObservatoryView from '../views/ObservatoryView';
+import AiDeepDiveView from '../views/AiDeepDiveView';
+import CommunityDiscoveriesView from '../views/CommunityDiscoveriesView';
 
 
 interface HomePageProps {
     navigate: (page: Page, level?: 'kids' | 'teens' | 'adults') => void;
     onPlanetSelect: (planet: Exoplanet) => void;
+    discoveredPlanets: Exoplanet[];
 }
 
-const HomePage: React.FC<HomePageProps> = ({ navigate, onPlanetSelect }) => {
+const HomePage: React.FC<HomePageProps> = ({ navigate, onPlanetSelect, discoveredPlanets }) => {
     return (
         <>
+            {/* Section with the scrolling video background */}
             <div className="relative">
-                <div className="h-[200vh]">
-                    <div className="sticky top-0 h-screen w-full">
-                        <video
-                            aria-hidden="true"
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            className="absolute inset-0 w-full h-full object-cover z-0"
-                        >
-                            <source src="/cover-background.webm" type="video/webm" />
-                            <source src="/cover-background.mp4" type="video/mp4" />
-                        </video>
-                         <div className="absolute inset-0 bg-gradient-to-t from-[var(--background-end)] via-[var(--background-end)]/40 to-transparent z-10"></div>
-                    </div>
+                <div className="absolute inset-0 z-[-1]">
+                    <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-cover"
+                    >
+                        <source src="/cover-background.mp4" type="video/mp4" />
+                    </video>
+                    <div className="absolute inset-0 bg-black/60" />
                 </div>
 
-                <div className="absolute top-0 left-0 w-full">
-                    <HeroView />
-                    <ChallengeView />
-                </div>
+                <HeroView />
+                <ChallengeView />
+                
+                {/* This gradient creates the seamless transition. Increased height for a smoother fade. */}
+                <div className="absolute bottom-0 left-0 right-0 h-96 bg-gradient-to-t from-[var(--background-end)] to-transparent" />
             </div>
-
-            <div className="relative z-10 bg-[var(--background-end)]">
-              <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                  <ProjectInfoView />
-                  <DashboardView navigate={navigate} />
-                  <GalleryView navigate={navigate} onPlanetSelect={onPlanetSelect} />
-                  <EducationView navigate={navigate} />
-              </div>
+            
+            {/* The rest of the page content */}
+            <div className="relative bg-[var(--background-end)]">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <ProjectInfoView />
+                    <ObservatoryView />
+                    <DashboardView navigate={navigate} />
+                    <AiDeepDiveView />
+                    <CommunityDiscoveriesView />
+                    <GalleryView navigate={navigate} onPlanetSelect={onPlanetSelect} discoveredPlanetIds={discoveredPlanets.map(p => p.id)} />
+                    <EducationView navigate={navigate} />
+                </div>
             </div>
         </>
     );

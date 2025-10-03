@@ -66,17 +66,17 @@ const InteractiveScatterPlot: React.FC<InteractiveScatterPlotProps> = ({ planets
             </div>
             <div className="h-80 w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                    <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                    <ScatterChart margin={{ top: 20, right: 20, bottom: 40, left: 30 }}>
                         <CartesianGrid stroke="var(--border-color)" />
                         <XAxis 
                             type="number" dataKey="orbitalPeriod" name="Orbital Period" unit=" days" 
                             stroke="var(--text-muted)" tick={{ fontSize: 12 }} scale="log" domain={['dataMin', 'dataMax']}
-                            label={{ value: 'Orbital Period (days, log scale)', position: 'insideBottom', offset: -10, fill: 'var(--text-muted)', fontSize: 12 }}
+                            label={{ value: 'Orbital Period (days, log scale)', position: 'insideBottom', offset: -25, fill: 'var(--text-muted)', fontSize: 12 }}
                         />
                         <YAxis 
                             type="number" dataKey="radius" name="Radius" unit="x Earth" 
                             stroke="var(--text-muted)" tick={{ fontSize: 12 }}
-                            label={{ value: 'Radius (xEarth)', angle: -90, position: 'insideLeft', fill: 'var(--text-muted)', fontSize: 12, dx: 10 }}
+                            label={{ value: 'Radius (xEarth)', angle: -90, position: 'insideLeft', fill: 'var(--text-muted)', fontSize: 12, dx: -10 }}
                         />
                         <ZAxis type="number" dataKey="radius" range={[20, 200]} name="size" />
                         <Tooltip cursor={{ strokeDasharray: '3 3' }} content={<CustomTooltip />} />
