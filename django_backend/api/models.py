@@ -4,3 +4,4 @@ from django.db import models
 class ExoPlanetData(models.Model):
     id = models.AutoField(primary_key=True)
     planet_name = models.CharField(max_length=100)
+    confidence = models.CharField(max_length=100)
