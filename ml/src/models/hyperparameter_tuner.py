@@ -12,6 +12,7 @@ from optuna.visualization import (
 import xgboost as xgb
 import lightgbm as lgb
 from sklearn.metrics import accuracy_score, f1_score
+from sklearn.utils.class_weight import compute_class_weight
 import joblib
 
 from ..utils.entity import ModelData
@@ -36,42 +37,52 @@ class HyperparameterTuner:
     def optimize_xgboost(self, n_trials: int = 100, metric: str = "f1_macro"):
         logger.info(f"Starting XGBoost optimization with {n_trials} trials")
 
+        classes = np.unique(self.model_data.y_train)
+        class_weights = compute_class_weight(
+            "balanced", classes=classes, y=self.model_data.y_train
+        )
+        sample_weights = np.array([class_weights[y] for y in self.model_data.y_train])
+
         def objective(trial):
-            params = {
-                "n_estimators": trial.suggest_int("n_estimators", 500, 2000),
-                "max_depth": trial.suggest_int("max_depth", 4, 12),
-                "learning_rate": trial.suggest_float(
-                    "learning_rate", 0.001, 0.1, log=True
-                ),
-                "subsample": trial.suggest_float("subsample", 0.6, 1.0),
-                "colsample_bytree": trial.suggest_float("colsample_bytree", 0.6, 1.0),
-                "min_child_weight": trial.suggest_int("min_child_weight", 1, 10),
-                "gamma": trial.suggest_float("gamma", 0, 5),
-                "reg_alpha": trial.suggest_float("reg_alpha", 0, 10),
-                "reg_lambda": trial.suggest_float("reg_lambda", 0, 10),
-                "objective": "multi:softmax",
-                "num_class": 3,
-                "random_state": RANDOM_STATE,
-                "eval_metric": "mlogloss",
-                "early_stopping_rounds": 50,
-            }
+            try:
+                params = {
+                    "n_estimators": trial.suggest_int("n_estimators", 500, 2000),
+                    "max_depth": trial.suggest_int("max_depth", 4, 12),
+                    "learning_rate": trial.suggest_float("learning_rate", 0.001, 0.1, log=True),
+                    "subsample": trial.suggest_float("subsample", 0.6, 1.0),
+                    "colsample_bytree": trial.suggest_float("colsample_bytree", 0.6, 1.0),
+                    "min_child_weight": trial.suggest_int("min_child_weight", 1, 10),
+                    "gamma": trial.suggest_float("gamma", 0, 5),
+                    "reg_alpha": trial.suggest_float("reg_alpha", 0, 10),
+                    "reg_lambda": trial.suggest_float("reg_lambda", 0, 10),
+                    "objective": "multi:softmax",
+                    "num_class": 3,
+                    "random_state": RANDOM_STATE,
+                    "eval_metric": "mlogloss",
+                    "early_stopping_rounds": 50,
+                }
 
-            model = xgb.XGBClassifier(**params)
-            model.fit(
-                self.model_data.X_train,
-                self.model_data.y_train,
-                eval_set=[(self.model_data.X_cv, self.model_data.y_cv)],
-                verbose=False,
-            )
+                model = xgb.XGBClassifier(**params)
+                model.fit(
+                    self.model_data.X_train,
+                    self.model_data.y_train,
+                    sample_weight=sample_weights,  # ADD SAMPLE WEIGHTS
+                    eval_set=[(self.model_data.X_cv, self.model_data.y_cv)],
+                    verbose=False,
+                )
 
-            preds = model.predict(self.model_data.X_cv)
+                preds = model.predict(self.model_data.X_cv)
 
-            if metric == "accuracy":
-                return accuracy_score(self.model_data.y_cv, preds)
-            elif metric == "f1_macro":
-                return f1_score(self.model_data.y_cv, preds, average="macro")
-            elif metric == "f1_weighted":
-                return f1_score(self.model_data.y_cv, preds, average="weighted")
+                if metric == "accuracy":
+                    return accuracy_score(self.model_data.y_cv, preds)
+                elif metric == "f1_macro":
+                    return f1_score(self.model_data.y_cv, preds, average="macro")
+                elif metric == "f1_weighted":
+                    return f1_score(self.model_data.y_cv, preds, average="weighted")
+                    
+            except Exception as e:
+                logger.warning(f"Trial failed: {e}")
+                return 0.0  # Return worst score for failed trials
 
         study = optuna.create_study(
             direction="maximize",
@@ -80,6 +91,7 @@ class HyperparameterTuner:
         )
 
         study.optimize(objective, n_trials=n_trials, show_progress_bar=True)
+
 
         self.best_xgb_params = study.best_params
         logger.info(f"Best XGBoost {metric}: {study.best_value:.4f}")

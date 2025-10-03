@@ -1,11 +1,11 @@
-2025-10-03 06:28:45,085 - HyperparameterTuner - INFO - 
+2025-10-03 09:02:54,577 - HyperparameterTuner - INFO - 
 Optimizing XGBoost
-2025-10-03 06:28:45,085 - HyperparameterTuner - INFO - Starting XGBoost optimization with 100 trials
-2025-10-03 06:33:01,913 - HyperparameterTuner - INFO - Best XGBoost f1_macro: 0.6698
-2025-10-03 06:33:01,913 - HyperparameterTuner - INFO - Best XGBoost params: {'n_estimators': 1480, 'max_depth': 11, 'learning_rate': 0.03198928809467827, 'subsample': 0.8757317395930323, 'colsample_bytree': 0.9842209238008991, 'min_child_weight': 1, 'gamma': 0.3671344691073948, 'reg_alpha': 8.63674384774019, 'reg_lambda': 6.266313537158217}
-2025-10-03 06:33:01,938 - HyperparameterTuner - INFO - 
+2025-10-03 09:02:54,577 - HyperparameterTuner - INFO - Starting XGBoost optimization with 100 trials
+2025-10-03 09:05:01,640 - HyperparameterTuner - INFO - Best XGBoost f1_macro: 0.6789
+2025-10-03 09:05:01,640 - HyperparameterTuner - INFO - Best XGBoost params: {'n_estimators': 715, 'max_depth': 4, 'learning_rate': 0.05689520143056363, 'subsample': 0.8452840689690262, 'colsample_bytree': 0.9436486835538308, 'min_child_weight': 10, 'gamma': 0.12403999924771769, 'reg_alpha': 1.0076190126620914, 'reg_lambda': 1.9233771843963485}
+2025-10-03 09:05:01,662 - HyperparameterTuner - INFO - 
 Optimizing LightGBM
-2025-10-03 06:33:01,938 - HyperparameterTuner - INFO - Starting LightGBM optimization with 100 trials
-2025-10-03 06:37:26,491 - HyperparameterTuner - INFO - Best LightGBM f1_macro: 0.6737
-2025-10-03 06:37:26,491 - HyperparameterTuner - INFO - Best LightGBM params: {'n_estimators': 1943, 'max_depth': 12, 'learning_rate': 0.015205296920714796, 'num_leaves': 74, 'subsample': 0.9901199561110109, 'colsample_bytree': 0.8807078819414685, 'min_child_weight': 0.6988346635849865, 'reg_alpha': 3.314772261880284, 'reg_lambda': 8.67583300246803}
-2025-10-03 06:37:26,510 - HyperparameterTuner - INFO - Saved optimization summary to models\optimization
+2025-10-03 09:05:01,662 - HyperparameterTuner - INFO - Starting LightGBM optimization with 100 trials
+2025-10-03 09:09:25,522 - HyperparameterTuner - INFO - Best LightGBM f1_macro: 0.6756
+2025-10-03 09:09:25,522 - HyperparameterTuner - INFO - Best LightGBM params: {'n_estimators': 606, 'max_depth': 12, 'learning_rate': 0.05373985916252923, 'num_leaves': 66, 'subsample': 0.980437109096673, 'colsample_bytree': 0.622431564913036, 'min_child_weight': 0.7550539139238421, 'reg_alpha': 0.9575768391492399, 'reg_lambda': 9.490533697409084}
+2025-10-03 09:09:25,541 - HyperparameterTuner - INFO - Saved optimization summary to models\optimization

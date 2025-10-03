@@ -33,6 +33,12 @@ class DataPreprocessor:
         logger.info(f"Initial shape: {dataframe.shape}")
         logger.info(f"Missing values per column:\n{dataframe.isnull().sum()}")
 
+        missing_ratio = dataframe.isnull().sum() / len(dataframe)
+        columns_to_keep = missing_ratio[missing_ratio < 0.8].index
+        dataframe = dataframe[columns_to_keep]
+
+        logger.info(f"After removing high-missing columns: {dataframe.shape}")
+
         numeric_cols = dataframe.select_dtypes(include=[np.number]).columns.tolist()
         categorical_cols = dataframe.select_dtypes(exclude=[np.number]).columns.tolist()
         if "disposition" in numeric_cols:
@@ -83,17 +89,59 @@ class DataPreprocessor:
         }
         return y.map(mapping)
 
-    def add_derived_features(self, df: pd.DataFrame) -> pd.DataFrame:
-        df["transit_signal_strength"] = df["depth"] * df["duration"] / df["period"]
-        df["stellar_density_proxy"] = df["logg"] / (df["star_radius"] ** 2)
-        df["radius_ratio"] = df["planet_radius"] / df["star_radius"]
-        df["eq_temp_estimate"] = df["teff"] * np.sqrt(
-            df["star_radius"] / (2 * df["semi_major_axis"])
-        )
-        df["transit_probability"] = df["star_radius"] / df["semi_major_axis"]
-        for col in ["period", "duration", "depth"]:
-            df[f"log_{col}"] = np.log1p(df[col])
+    def sanitize_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
+        logger.info("Sanitizing dataframe - removing infinite values")
 
+        df = df.replace([np.inf, -np.inf], np.nan)
+
+        critical_columns = ["period", "duration", "star_radius", "semi_major_axis"]
+        for col in critical_columns:
+            if col in df.columns:
+                df[col] = df[col].replace(0, 1e-10)
+                df.loc[df[col] < 0, col] = np.nan
+
+        return df
+
+    def add_derived_features(self, df: pd.DataFrame) -> pd.DataFrame:
+        df = self.sanitize_dataframe(df)
+
+        try:
+            epsilon = 1e-10
+
+            df["transit_signal_strength"] = (
+                df["depth"] * df["duration"] / (df["period"] + epsilon)
+            )
+            df["radius_ratio"] = df["planet_radius"] / (df["star_radius"] + epsilon)
+            df["transit_probability"] = df["star_radius"] / (
+                df["semi_major_axis"] + epsilon
+            )
+            df["orbital_velocity"] = (2 * np.pi * df["semi_major_axis"]) / (
+                df["period"] + epsilon
+            )
+            df["stellar_flux"] = df["teff"] ** 4 / (
+                (df["semi_major_axis"] + epsilon) ** 2
+            )
+            df["transit_depth_norm"] = df["depth"] / (
+                (df["star_radius"] + epsilon) ** 2
+            )
+            df["habitable_zone_proxy"] = np.sqrt(df["teff"] / 5778) / np.sqrt(
+                df["semi_major_axis"] + epsilon
+            )
+
+            df["radius_temp_interaction"] = df["planet_radius"] * df["teff"]
+            df["period_depth_interaction"] = df["period"] * np.log1p(df["depth"])
+
+            for col in ["period", "duration", "depth", "planet_radius", "star_radius"]:
+                if col in df.columns:
+                    clipped = np.clip(df[col], 1e-10, 1e10)
+                    df[f"log_{col}"] = np.log1p(clipped)
+                    df[f"log_{col}_squared"] = np.log1p(clipped) ** 2
+
+        except Exception as e:
+            logger.error(f"Error in feature engineering: {e}")
+            raise
+
+        df = self.sanitize_dataframe(df)
         return df
 
     def split_data(
@@ -174,8 +222,10 @@ class DataPreprocessor:
                 f"Removed {rows_removed} rows with invalid 'disposition' labels."
             )
 
+        clean_df = self.sanitize_dataframe(clean_df)
         clean_df = self.handle_missing_values(clean_df)
         clean_df = self.add_derived_features(clean_df)
+        clean_df = self.sanitize_dataframe(clean_df)
 
         y_unencoded = clean_df["disposition"]
         y_encoded = self._encode_target_variable(y_unencoded)

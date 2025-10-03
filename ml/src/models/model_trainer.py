@@ -8,6 +8,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers, models
 from sklearn.preprocessing import StandardScaler
+from sklearn.utils.class_weight import compute_class_weight
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 import xgboost as xgb
@@ -35,6 +36,8 @@ class StackedEnsembleTrainer:
 
         self.optimized_params = optimized_params
 
+        self.sample_weights = self.calculate_class_weights()
+
         self.feature_scaler = StandardScaler()
         self.xgb_model = None
         self.lgb_model = None
@@ -44,6 +47,14 @@ class StackedEnsembleTrainer:
         self.X_train_scaled = None
         self.X_test_scaled = None
         self.X_cv_scaled = None
+
+    def calculate_class_weights(self):
+
+        classes = np.unique(self.model_data.y_train)
+        weights = compute_class_weight(
+            "balanced", classes=classes, y=self.model_data.y_train
+        )
+        return dict(zip(classes, weights))
 
     def preprocess_features(self):
         logger.info("Scaling features")
@@ -57,6 +68,8 @@ class StackedEnsembleTrainer:
 
     def build_xgboost_model(self):
         logger.info("Training XGBoost model")
+
+        class_weights = self.sample_weights
 
         if self.optimized_params and "xgboost" in self.optimized_params:
             xgb_params = self.optimized_params["xgboost"]["best_params"].copy()
@@ -85,9 +98,11 @@ class StackedEnsembleTrainer:
         )
         self.xgb_model = xgb.XGBClassifier(**xgb_params)
 
+        sample_weights = np.array([class_weights[y] for y in self.model_data.y_train])
         self.xgb_model.fit(
             self.X_train_scaled,
             self.model_data.y_train,
+            sample_weight=sample_weights,
             eval_set=[(self.X_cv_scaled, self.model_data.y_cv)],
             verbose=50,
         )
@@ -104,6 +119,8 @@ class StackedEnsembleTrainer:
 
     def build_lightgbm_model(self):
         logger.info("Training LightGBM model")
+        
+        class_weights = self.sample_weights
 
         if self.optimized_params and "lightgbm" in self.optimized_params:
             lgb_params = self.optimized_params["lightgbm"]["best_params"].copy()
@@ -134,9 +151,11 @@ class StackedEnsembleTrainer:
 
         self.lgb_model = lgb.LGBMClassifier(**lgb_params)
 
+        sample_weights = np.array([class_weights[y] for y in self.model_data.y_train])
         self.lgb_model.fit(
             self.X_train_scaled,
             self.model_data.y_train,
+            sample_weight=sample_weights,
             eval_set=[(self.X_cv_scaled, self.model_data.y_cv)],
             callbacks=[lgb.early_stopping(50), lgb.log_evaluation(50)],
         )
@@ -154,45 +173,40 @@ class StackedEnsembleTrainer:
     def build_mlp_model(self):
         logger.info("Training MLP model")
 
+        class_weights = self.sample_weights
+
         n_features = self.X_train_scaled.shape[1]
         self.mlp_model = models.Sequential(
             [
-                layers.Input(shape=(n_features,)),
-                layers.Dense(256, activation="relu"),
-                layers.BatchNormalization(),
-                layers.Dropout(0.3),
-                layers.Dense(128, activation="relu"),
-                layers.BatchNormalization(),
-                layers.Dropout(0.3),
-                layers.Dense(64, activation="relu"),
-                layers.BatchNormalization(),
-                layers.Dropout(0.2),
-                layers.Dense(32, activation="relu"),
-                layers.Dropout(0.2),
-                layers.Dense(3, activation="softmax"),
+            layers.Input(shape=(n_features,)),
+            layers.Dense(16, activation="relu"),
+            layers.Dropout(0.5),
+            layers.Dense(3, activation="softmax"),
             ]
         )
 
         self.mlp_model.compile(
-            optimizer=keras.optimizers.Adam(learning_rate=0.001),
+            optimizer=keras.optimizers.Adam(learning_rate=0.0005),
             loss="sparse_categorical_crossentropy",
             metrics=["accuracy"],
         )
 
         early_stop = keras.callbacks.EarlyStopping(
-            monitor="val_loss", patience=20, restore_best_weights=True
+            monitor="val_loss", patience=50, restore_best_weights=True, min_delta=0.001
         )
 
         reduce_lr = keras.callbacks.ReduceLROnPlateau(
             monitor="val_loss", factor=0.5, patience=10, min_lr=1e-7
         )
 
+        sample_weights = np.array([class_weights[y] for y in self.model_data.y_train])
         self.mlp_model.fit(
             self.X_train_scaled,
             self.model_data.y_train,
+            sample_weight=sample_weights,
             validation_data=(self.X_cv_scaled, self.model_data.y_cv),
-            epochs=200,
-            batch_size=64,
+            epochs=300,
+            batch_size=32,
             callbacks=[early_stop, reduce_lr],
             verbose=1,
         )

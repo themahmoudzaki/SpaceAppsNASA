@@ -1,8 +1,9 @@
-2025-10-03 06:28:37,920 - DataPreprocessor - WARNING - Removed 7721 rows with invalid 'disposition' labels.
-2025-10-03 06:28:37,920 - DataPreprocessor - INFO - Initial shape: (13546, 10)
-2025-10-03 06:28:37,921 - DataPreprocessor - INFO - Missing values per column:
+2025-10-03 09:02:47,958 - DataPreprocessor - WARNING - Removed 7721 rows with invalid 'disposition' labels.
+2025-10-03 09:02:47,958 - DataPreprocessor - INFO - Sanitizing dataframe - removing infinite values
+2025-10-03 09:02:47,962 - DataPreprocessor - INFO - Initial shape: (13546, 10)
+2025-10-03 09:02:47,963 - DataPreprocessor - INFO - Missing values per column:
 period                67
-duration            1235
+duration            1236
 depth               4345
 planet_radius       1204
 disposition            0
@@ -12,14 +13,18 @@ star_radius         9706
 teff               10682
 logg               11209
 dtype: int64
-2025-10-03 06:28:37,922 - DataPreprocessor - INFO - After removing rows with missing target: (13546, 10)
-2025-10-03 06:28:44,961 - DataPreprocessor - INFO - Applied knn imputation for numeric columns
-2025-10-03 06:28:44,963 - DataPreprocessor - INFO - Applied mode imputation for categorical columns
-2025-10-03 06:28:44,963 - DataPreprocessor - INFO - Final shape after imputation: (13546, 10)
-2025-10-03 06:28:44,964 - DataPreprocessor - INFO - Remaining missing values: 0
-2025-10-03 06:28:44,977 - DataPreprocessor - INFO - Data split - Train: (9482, 16), Test: (2032, 16), CV: (2032, 16)
-2025-10-03 06:28:44,977 - DataPreprocessor - INFO - Class distribution - Train: {'FALSE POSITIVE': 3592, 'CONFIRMED': 3543, 'CANDIDATE': 2347}
-2025-10-03 06:28:44,977 - DataPreprocessor - INFO - Class distribution - Test: {'FALSE POSITIVE': 770, 'CONFIRMED': 759, 'CANDIDATE': 503}
-2025-10-03 06:28:44,978 - DataPreprocessor - INFO - Class distribution - CV: {'FALSE POSITIVE': 770, 'CONFIRMED': 759, 'CANDIDATE': 503}
-2025-10-03 06:28:45,084 - DataPreprocessor - INFO - Saved processed data to data\processed
-2025-10-03 06:28:45,084 - DataPreprocessor - INFO - Preprocessing pipeline complete!
+2025-10-03 09:02:47,964 - DataPreprocessor - INFO - After removing high-missing columns: (13546, 9)
+2025-10-03 09:02:47,965 - DataPreprocessor - INFO - After removing rows with missing target: (13546, 9)
+2025-10-03 09:02:54,351 - DataPreprocessor - INFO - Applied knn imputation for numeric columns
+2025-10-03 09:02:54,354 - DataPreprocessor - INFO - Applied mode imputation for categorical columns
+2025-10-03 09:02:54,354 - DataPreprocessor - INFO - Final shape after imputation: (13546, 9)
+2025-10-03 09:02:54,355 - DataPreprocessor - INFO - Remaining missing values: 0
+2025-10-03 09:02:54,355 - DataPreprocessor - INFO - Sanitizing dataframe - removing infinite values
+2025-10-03 09:02:54,364 - DataPreprocessor - INFO - Sanitizing dataframe - removing infinite values
+2025-10-03 09:02:54,369 - DataPreprocessor - INFO - Sanitizing dataframe - removing infinite values
+2025-10-03 09:02:54,383 - DataPreprocessor - INFO - Data split - Train: (9482, 26), Test: (2032, 26), CV: (2032, 26)
+2025-10-03 09:02:54,384 - DataPreprocessor - INFO - Class distribution - Train: {'FALSE POSITIVE': 3592, 'CONFIRMED': 3543, 'CANDIDATE': 2347}
+2025-10-03 09:02:54,384 - DataPreprocessor - INFO - Class distribution - Test: {'FALSE POSITIVE': 770, 'CONFIRMED': 759, 'CANDIDATE': 503}
+2025-10-03 09:02:54,385 - DataPreprocessor - INFO - Class distribution - CV: {'FALSE POSITIVE': 770, 'CONFIRMED': 759, 'CANDIDATE': 503}
+2025-10-03 09:02:54,575 - DataPreprocessor - INFO - Saved processed data to data\processed
+2025-10-03 09:02:54,575 - DataPreprocessor - INFO - Preprocessing pipeline complete!
