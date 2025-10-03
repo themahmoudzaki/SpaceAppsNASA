@@ -1,5 +1,0 @@
-# Step 1: Build the Docker image (from the directory with your Dockerfile)
-sudo docker build -t myapp .
-
-# Step 2: Run the built image, exposing port 3000 for frontend access
-sudo docker run -p 3000:3000 myapp
