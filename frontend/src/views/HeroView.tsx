@@ -29,8 +29,8 @@ const HeroView: React.FC = () => {
   const title = "Hunt for New Worlds";
 
   return (
-    <section ref={heroRef} className="h-screen flex flex-col items-center justify-center text-center overflow-hidden">
-      <div className="relative z-10 p-4">
+    <section ref={heroRef} className="min-h-screen flex flex-col items-center justify-center text-center relative z-10">
+      <div className="p-4">
         <h1 className="font-orbitron text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-white uppercase" style={{ textShadow: '0 0 20px rgba(147, 112, 219, 0.7)' }}>
           {title.split("").map((char, index) => (
             <span key={index} className={`title-char inline-block ${char === ' ' ? 'mx-1 sm:mx-2' : ''}`}>
@@ -43,7 +43,7 @@ const HeroView: React.FC = () => {
         </p>
       </div>
 
-      <div className="scroll-indicator absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 z-10">
+      <div className="scroll-indicator absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2">
           <span className="text-sm text-[var(--text-muted)]">Scroll to Explore</span>
           <div className="w-0.5 h-12 bg-white/20 relative">
               <div className="w-full h-4 bg-white/80 absolute top-0 animate-[scroll-down_2s_ease-in-out_infinite]"></div>
