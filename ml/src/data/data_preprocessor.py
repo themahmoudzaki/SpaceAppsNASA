@@ -83,6 +83,19 @@ class DataPreprocessor:
         }
         return y.map(mapping)
 
+    def add_derived_features(self, df: pd.DataFrame) -> pd.DataFrame:
+        df["transit_signal_strength"] = df["depth"] * df["duration"] / df["period"]
+        df["stellar_density_proxy"] = df["logg"] / (df["star_radius"] ** 2)
+        df["radius_ratio"] = df["planet_radius"] / df["star_radius"]
+        df["eq_temp_estimate"] = df["teff"] * np.sqrt(
+            df["star_radius"] / (2 * df["semi_major_axis"])
+        )
+        df["transit_probability"] = df["star_radius"] / df["semi_major_axis"]
+        for col in ["period", "duration", "depth"]:
+            df[f"log_{col}"] = np.log1p(df[col])
+
+        return df
+
     def split_data(
         self,
         X: pd.DataFrame,
@@ -162,6 +175,7 @@ class DataPreprocessor:
             )
 
         clean_df = self.handle_missing_values(clean_df)
+        clean_df = self.add_derived_features(clean_df)
 
         y_unencoded = clean_df["disposition"]
         y_encoded = self._encode_target_variable(y_unencoded)

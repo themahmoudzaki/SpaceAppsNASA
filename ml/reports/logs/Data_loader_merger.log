@@ -1,41 +1,40 @@
-2025-10-02 02:03:52,560 - DataLoaderAndMerger - INFO - Successfully loaded data from data\Kepler_captured_data.csv with shape (9564, 141)
-2025-10-02 02:03:52,625 - DataLoaderAndMerger - INFO - Successfully loaded data from data\K2_mission_captured_data.csv with shape (4004, 295)
-2025-10-02 02:03:52,668 - DataLoaderAndMerger - INFO - Successfully loaded data from data\TESS_mission_captured_data.csv with shape (7699, 87)
-2025-10-02025-10-02 02:03:52,721 - Main - INFO - 
+2025-10-03 06:28:37,052 - DataLoaderAndMerger - INFO - Successfully loaded data from data\Kepler_captured_data.csv with shape (9564, 141)
+2025-10-03 06:28:37,119 - DataLoaderAndMerger - INFO2025-10-03 06:28:37,223 - Main - INFO - 
 [STEP 2/5] Generating visualizations...
-2025-10-02 02:03:53,297 - Main - INFO - Visualizations saved to: reports/figures/
-2025-10-02 02:03:53,298 - Main - INFO - 
+2025-10-03 06:28:37,915 - Main - INFO - Visualizations saved to: reports/figures/
+2025-10-03 06:28:37,915 - Main - INFO - 
 [STEP 3/5] Preprocessing data...
-2025-10-02 02:04:00,319 - Main - INFO - 
+2025-10-03 06:28:45,085 - Main - INFO - 
 [STEP 4/5] Training stacked ensemble model...
-2025-10-02 02:04:00,320 - Main - INFO - Base models: XGBoost + LightGBM + MLP
-2025-10-02 02:04:00,320 - Main - INFO - Meta-model: Neural Network
-2025-10-02 02:04:36,883 - Main - INFO - 
+2025-10-03 06:28:45,085 - Main - INFO - Base models: XGBoost + LightGBM + MLP
+2025-10-03 06:28:45,085 - Main - INFO - Meta-model: Neural Network
+2025-10-03 06:37:26,511 - Main - INFO - Optimization complete
+2025-10-03 06:38:06,721 - Main - INFO - 
 [STEP 5/5] Final Results
-2025-10-02 02:04:36,883 - Main - INFO - ================================================================================
-2025-10-02 02:04:36,884 - Main - INFO - Test Accuracy: 0.6801
-2025-10-02 02:04:36,884 - Main - INFO - 
+2025-10-03 06:38:06,721 - Main - INFO - ================================================================================
+2025-10-03 06:38:06,721 - Main - INFO - Test Accuracy: 0.6732
+2025-10-03 06:38:06,721 - Main - INFO - 
 Classification Report:
                 precision    recall  f1-score   support
 
 FALSE_POSITIVE       0.73      0.79      0.76       770
-     CANDIDATE       0.51      0.31      0.39       503
-     CONFIRMED       0.70      0.81      0.75       759
+     CANDIDATE       0.48      0.30      0.37       503
+     CONFIRMED       0.68      0.81      0.74       759
 
-      accuracy                           0.68      2032
-     macro avg       0.64      0.64      0.63      2032
-  weighted avg       0.66      0.68      0.66      2032
+      accuracy                           0.67      2032
+     macro avg       0.63      0.63      0.62      2032
+  weighted avg       0.65      0.67      0.66      2032
 
-2025-10-02 02:04:36,884 - Main - INFO - 
+2025-10-03 06:38:06,722 - Main - INFO - 
 Confusion Matrix:
-[[609  83  78]
- [155 157 191]
- [ 74  69 616]]
-2025-10-02 02:04:36,884 - Main - INFO - 
+[[605  85  80]
+ [150 152 201]
+ [ 71  77 611]]
+2025-10-03 06:38:06,722 - Main - INFO - 
 ================================================================================
-2025-10-02 02:04:36,884 - Main - INFO - PIPELINE COMPLETE!
-2025-10-02 02:04:36,884 - Main - INFO - ================================================================================
-2025-10-02 02:04:36,884 - Main - INFO - Models saved to: models
-2025-10-02 02:04:36,884 - Main - INFO - Processed data saved to: data\processed
-2025-10-02 02:04:36,884 - Main - INFO - Logs saved to: reports/logs/
-2025-10-02 02:04:36,884 - Main - INFO - Figures saved to: reports/figures/
+2025-10-03 06:38:06,722 - Main - INFO - PIPELINE COMPLETE!
+2025-10-03 06:38:06,722 - Main - INFO - ================================================================================
+2025-10-03 06:38:06,722 - Main - INFO - Models saved to: models
+2025-10-03 06:38:06,723 - Main - INFO - Processed data saved to: data\processed
+2025-10-03 06:38:06,723 - Main - INFO - Logs saved to: reports/logs/
+2025-10-03 06:38:06,723 - Main - INFO - Figures saved to: reports/figures/

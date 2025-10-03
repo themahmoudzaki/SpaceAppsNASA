@@ -1,6 +1,6 @@
-2025-10-02 02:03:53,302 - DataPreprocessor - WARNING - Removed 7721 rows with invalid 'disposition' labels.
-2025-10-02 02:03:53,302 - DataPreprocessor - INFO - Initial shape: (13546, 10)
-2025-10-02 02:03:53,303 - DataPreprocessor - INFO - Missing values per column:
+2025-10-03 06:28:37,920 - DataPreprocessor - WARNING - Removed 7721 rows with invalid 'disposition' labels.
+2025-10-03 06:28:37,920 - DataPreprocessor - INFO - Initial shape: (13546, 10)
+2025-10-03 06:28:37,921 - DataPreprocessor - INFO - Missing values per column:
 period                67
 duration            1235
 depth               4345
@@ -12,14 +12,14 @@ star_radius         9706
 teff               10682
 logg               11209
 dtype: int64
-2025-10-02 02:03:53,304 - DataPreprocessor - INFO - After removing rows with missing target: (13546, 10)
-2025-10-02 02:04:00,254 - DataPreprocessor - INFO - Applied knn imputation for numeric columns
-2025-10-02 02:04:00,256 - DataPreprocessor - INFO - Applied mode imputation for categorical columns
-2025-10-02 02:04:00,257 - DataPreprocessor - INFO - Final shape after imputation: (13546, 10)
-2025-10-02 02:04:00,257 - DataPreprocessor - INFO - Remaining missing values: 0
-2025-10-02 02:04:00,267 - DataPreprocessor - INFO - Data split - Train: (9482, 8), Test: (2032, 8), CV: (2032, 8)
-2025-10-02 02:04:00,267 - DataPreprocessor - INFO - Class distribution - Train: {'FALSE POSITIVE': 3592, 'CONFIRMED': 3543, 'CANDIDATE': 2347}
-2025-10-02 02:04:00,268 - DataPreprocessor - INFO - Class distribution - Test: {'FALSE POSITIVE': 770, 'CONFIRMED': 759, 'CANDIDATE': 503}
-2025-10-02 02:04:00,268 - DataPreprocessor - INFO - Class distribution - CV: {'FALSE POSITIVE': 770, 'CONFIRMED': 759, 'CANDIDATE': 503}
-2025-10-02 02:04:00,319 - DataPreprocessor - INFO - Saved processed data to data\processed
-2025-10-02 02:04:00,319 - DataPreprocessor - INFO - Preprocessing pipeline complete!
+2025-10-03 06:28:37,922 - DataPreprocessor - INFO - After removing rows with missing target: (13546, 10)
+2025-10-03 06:28:44,961 - DataPreprocessor - INFO - Applied knn imputation for numeric columns
+2025-10-03 06:28:44,963 - DataPreprocessor - INFO - Applied mode imputation for categorical columns
+2025-10-03 06:28:44,963 - DataPreprocessor - INFO - Final shape after imputation: (13546, 10)
+2025-10-03 06:28:44,964 - DataPreprocessor - INFO - Remaining missing values: 0
+2025-10-03 06:28:44,977 - DataPreprocessor - INFO - Data split - Train: (9482, 16), Test: (2032, 16), CV: (2032, 16)
+2025-10-03 06:28:44,977 - DataPreprocessor - INFO - Class distribution - Train: {'FALSE POSITIVE': 3592, 'CONFIRMED': 3543, 'CANDIDATE': 2347}
+2025-10-03 06:28:44,977 - DataPreprocessor - INFO - Class distribution - Test: {'FALSE POSITIVE': 770, 'CONFIRMED': 759, 'CANDIDATE': 503}
+2025-10-03 06:28:44,978 - DataPreprocessor - INFO - Class distribution - CV: {'FALSE POSITIVE': 770, 'CONFIRMED': 759, 'CANDIDATE': 503}
+2025-10-03 06:28:45,084 - DataPreprocessor - INFO - Saved processed data to data\processed
+2025-10-03 06:28:45,084 - DataPreprocessor - INFO - Preprocessing pipeline complete!

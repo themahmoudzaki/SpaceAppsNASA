@@ -1,53 +1,58 @@
-2025-10-02 02:04:00,320 - ModelTrainer - INFO - Starting stacked ensemble training pipeline...
-2025-10-02 02:04:00,320 - ModelTrainer - INFO - Scaling features
-2025-10-02 02:04:00,323 - ModelTrainer - INFO - Feature scaling complete
-2025-10-02 02:04:00,323 - ModelTrainer - INFO - Training XGBoost model
-2025-10-02 02:04:03,343 - ModelTrainer - INFO - XGBoost Train Accuracy: 0.9074
-2025-10-02 02:04:03,343 - ModelTrainer - INFO - XGBoost CV Accuracy: 0.7190
-2025-10-02 02:04:03,344 - ModelTrainer - INFO - Training LightGBM model
-2025-10-02 02:04:06,519 - ModelTrainer - INFO - LightGBM Train Accuracy: 0.8149
-2025-10-02 02:04:06,520 - ModelTrainer - INFO - LightGBM CV Accuracy: 0.7092
-2025-10-02 02:04:06,520 - ModelTrainer - INFO - Training MLP model
-2025-10-02 02:04:27,327 - ModelTrainer - INFO - MLP Train Accuracy: 0.6640
-2025-10-02 02:04:27,327 - ModelTrainer - INFO - MLP CV Accuracy: 0.6644
-2025-10-02 02:04:28,198 - ModelTrainer - INFO - Meta-features shape: (9482, 9)
-2025-10-02 02:04:28,198 - ModelTrainer - INFO - Training meta-model
-2025-10-02 02:04:36,540 - ModelTrainer - INFO - Meta-Model Train Accuracy: 0.9519
-2025-10-02 02:04:36,541 - ModelTrainer - INFO - Meta-Model CV Accuracy: 0.7077
-2025-10-02 02:04:36,541 - ModelTrainer - INFO - Evaluating stacked ensemble
-2025-10-02 02:04:36,637 - ModelTrainer - INFO - 
-Stacked Ensemble Test Accuracy: 0.6801
-2025-10-02 02:04:36,640 - ModelTrainer - INFO - 
+2025-10-03 06:37:26,511 - ModelTrainer - INFO - Starting stacked ensemble training pipeline...
+2025-10-03 06:37:26,511 - ModelTrainer - INFO - Scaling features
+2025-10-03 06:37:26,516 - ModelTrainer - INFO - Feature scaling complete
+2025-10-03 06:37:26,516 - ModelTrainer - INFO - Training XGBoost model
+2025-10-03 06:37:26,516 - ModelTrainer - INFO - Using optimized XGBoost parameters
+2025-10-03 06:37:26,516 - ModelTrainer - INFO - Expected F1 score: 0.6698
+2025-10-03 06:37:28,160 - ModelTrainer - INFO - XGBoost Train Accuracy: 0.7723
+2025-10-03 06:37:28,161 - ModelTrainer - INFO - XGBoost CV Accuracy: 0.7156
+2025-10-03 06:37:28,161 - ModelTrainer - INFO - Training LightGBM model
+2025-10-03 06:37:28,161 - ModelTrainer - INFO - Using optimized LightGBM parameters
+2025-10-03 06:37:28,161 - ModelTrainer - INFO - Expected F1 score: 0.6737
+2025-10-03 06:37:30,241 - ModelTrainer - INFO - LightGBM Train Accuracy: 0.8246
+2025-10-03 06:37:30,242 - ModelTrainer - INFO - LightGBM CV Accuracy: 0.7101
+2025-10-03 06:37:30,242 - ModelTrainer - INFO - Training MLP model
+2025-10-03 06:37:56,773 - ModelTrainer - INFO - MLP Train Accuracy: 0.6983
+2025-10-03 06:37:56,773 - ModelTrainer - INFO - MLP CV Accuracy: 0.6885
+2025-10-03 06:37:57,524 - ModelTrainer - INFO - Meta-features shape: (9482, 9)
+2025-10-03 06:37:57,524 - ModelTrainer - INFO - Training meta-model
+2025-10-03 06:38:06,417 - ModelTrainer - INFO - Meta-Model Train Accuracy: 0.8598
+2025-10-03 06:38:06,418 - ModelTrainer - INFO - Meta-Model CV Accuracy: 0.6954
+2025-10-03 06:38:06,418 - ModelTrainer - INFO - Evaluating stacked ensemble
+2025-10-03 06:38:06,520 - ModelTrainer - INFO - 
+Stacked Ensemble Test Accuracy: 0.6732
+2025-10-03 06:38:06,523 - ModelTrainer - INFO - 
 Classification Report:
                 precision    recall  f1-score   support
 
 FALSE_POSITIVE       0.73      0.79      0.76       770
-     CANDIDATE       0.51      0.31      0.39       503
-     CONFIRMED       0.70      0.81      0.75       759
+     CANDIDATE       0.48      0.30      0.37       503
+     CONFIRMED       0.68      0.81      0.74       759
 
-      accuracy                           0.68      2032
-     macro avg       0.64      0.64      0.63      2032
-  weighted avg       0.66      0.68      0.66      2032
+      accuracy                           0.67      2032
+     macro avg       0.63      0.63      0.62      2032
+  weighted avg       0.65      0.67      0.66      2032
 
-2025-10-02 02:04:36,641 - ModelTrainer - INFO - 
+2025-10-03 06:38:06,524 - ModelTrainer - INFO - 
 Confusion Matrix:
-[[609  83  78]
- [155 157 191]
- [ 74  69 616]]
-2025-10-02 02:04:36,641 - ModelTrainer - INFO - Saving stacked ensemble models
-2025-10-02 02:04:36,642 - ModelTrainer - INFO - Saved feature scaler
-2025-10-02 02:04:36,737 - ModelTrainer - INFO - Saved XGBoost model
-2025-10-02 02:04:36,838 - ModelTrainer - INFO - Saved LightGBM model
-2025-10-02 02:04:36,867 - ModelTrainer - INFO - Saved MLP model
-2025-10-02 02:04:36,880 - ModelTrainer - INFO - Saved meta-model
-2025-10-02 02:04:36,881 - ModelTrainer - INFO - Saved ensemble metadata
-2025-10-02 02:04:36,882 - ModelTrainer - INFO - All models saved successfully to: models
-2025-10-02 02:04:36,882 - ModelTrainer - INFO - 
+[[605  85  80]
+ [150 152 201]
+ [ 71  77 611]]
+2025-10-03 06:38:06,524 - ModelTrainer - INFO - Saving stacked ensemble models
+2025-10-03 06:38:06,525 - ModelTrainer - INFO - Saved feature scaler
+2025-10-03 06:38:06,560 - ModelTrainer - INFO - Saved XGBoost model
+2025-10-03 06:38:06,661 - ModelTrainer - INFO - Saved LightGBM model
+2025-10-03 06:38:06,692 - ModelTrainer - INFO - Saved MLP model
+2025-10-03 06:38:06,718 - ModelTrainer - INFO - Saved meta-model
+2025-10-03 06:38:06,718 - ModelTrainer - INFO - Saved ensemble metadata
+2025-10-03 06:38:06,719 - ModelTrainer - INFO - All models saved successfully to: models
+2025-10-03 06:38:06,719 - ModelTrainer - INFO - 
 Saved files:
-2025-10-02 02:04:36,882 - ModelTrainer - INFO -   - ensemble_info.pkl (0.00 MB)
-2025-10-02 02:04:36,882 - ModelTrainer - INFO -   - feature_scaler.pkl (0.00 MB)
-2025-10-02 02:04:36,882 - ModelTrainer - INFO -   - lightgbm_model.pkl (10.19 MB)
-2025-10-02 02:04:36,883 - ModelTrainer - INFO -   - meta_model.keras (0.07 MB)
-2025-10-02 02:04:36,883 - ModelTrainer - INFO -   - mlp_model.keras (0.59 MB)
-2025-10-02 02:04:36,883 - ModelTrainer - INFO -   - xgboost_model.pkl (22.44 MB)
-2025-10-02 02:04:36,883 - ModelTrainer - INFO - Training pipeline complete!
+2025-10-03 06:38:06,719 - ModelTrainer - INFO -   - ensemble_info.pkl (0.00 MB)
+2025-10-03 06:38:06,720 - ModelTrainer - INFO -   - feature_scaler.pkl (0.00 MB)
+2025-10-03 06:38:06,720 - ModelTrainer - INFO -   - lightgbm_model.pkl (10.31 MB)
+2025-10-03 06:38:06,720 - ModelTrainer - INFO -   - meta_model.keras (0.07 MB)
+2025-10-03 06:38:06,720 - ModelTrainer - INFO -   - mlp_model.keras (0.62 MB)
+2025-10-03 06:38:06,720 - ModelTrainer - INFO -   - optimization (0.00 MB)
+2025-10-03 06:38:06,721 - ModelTrainer - INFO -   - xgboost_model.pkl (4.51 MB)
+2025-10-03 06:38:06,721 - ModelTrainer - INFO - Training pipeline complete!

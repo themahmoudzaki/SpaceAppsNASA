@@ -6,6 +6,7 @@ from src.data.data_loader_and_merger import ExoPlanetData
 from src.data.data_visualizer import EXODataVisualizer
 from src.data.data_preprocessor import DataPreprocessor
 from src.models.model_trainer import StackedEnsembleTrainer
+from src.models.hyperparameter_tuner import HyperparameterTuner
 from src.utils.common import setup_logger
 
 
@@ -16,12 +17,10 @@ logger = setup_logger("Main", LOGGER_FILE_PATH)
 
 
 def main():
-    logger.info("=" * 80)
     logger.info("EXOPLANET CLASSIFICATION PIPELINE - NASA SPACE APPS COMPETITION")
-    logger.info("=" * 80)
 
     models_folder = Path("models")
-
+    optimization_folder = models_folder / "optimization"
     data_folder = Path("data")
     processed_data_folder = data_folder / "processed"
     k2_path = data_folder / "K2_mission_captured_data.csv"
@@ -58,7 +57,16 @@ def main():
     logger.info("Base models: XGBoost + LightGBM + MLP")
     logger.info("Meta-model: Neural Network")
 
-    trainer = StackedEnsembleTrainer(model_data=model_data, save_folder=models_folder)
+    tuner = HyperparameterTuner(model_data=model_data, save_folder=optimization_folder)
+
+    optimization_summary = tuner.optimize_all(xgb_trials=100, lgb_trials=100)
+    logger.info("Optimization complete")
+
+    trainer = StackedEnsembleTrainer(
+        model_data=model_data,
+        save_folder=models_folder,
+        optimized_params=optimization_summary,
+    )
 
     results = trainer.train_pipeline()
 

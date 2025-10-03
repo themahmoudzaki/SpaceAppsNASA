@@ -23,10 +23,17 @@ logger = setup_logger("ModelTrainer", LOGGER_FILE_PATH)
 
 
 class StackedEnsembleTrainer:
-    def __init__(self, model_data: ModelData, save_folder: Path):
+    def __init__(
+        self,
+        model_data: ModelData,
+        save_folder: Path,
+        optimized_params: dict = None,
+    ):
         self.model_data = model_data
         self.save_folder = save_folder
         self.save_folder.mkdir(parents=True, exist_ok=True)
+
+        self.optimized_params = optimized_params
 
         self.feature_scaler = StandardScaler()
         self.xgb_model = None
@@ -50,18 +57,33 @@ class StackedEnsembleTrainer:
 
     def build_xgboost_model(self):
         logger.info("Training XGBoost model")
-        self.xgb_model = xgb.XGBClassifier(
-            n_estimators=1024,
-            max_depth=8,
-            learning_rate=0.01,
-            subsample=0.8,
-            colsample_bytree=0.8,
-            objective="multi:softmax",
-            num_class=3,
-            random_state=RANDOM_STATE,
-            eval_metric="mlogloss",
-            early_stopping_rounds=50,
+
+        if self.optimized_params and "xgboost" in self.optimized_params:
+            xgb_params = self.optimized_params["xgboost"]["best_params"].copy()
+            logger.info("Using optimized XGBoost parameters")
+            logger.info(
+                f"Expected F1 score: {self.optimized_params['xgboost']['best_score']:.4f}"
+            )
+        else:
+            xgb_params = {
+                "n_estimators": 1024,
+                "max_depth": 8,
+                "learning_rate": 0.01,
+                "subsample": 0.8,
+                "colsample_bytree": 0.8,
+            }
+            logger.info("Using default XGBoost parameters")
+
+        xgb_params.update(
+            {
+                "objective": "multi:softmax",
+                "num_class": 3,
+                "random_state": RANDOM_STATE,
+                "eval_metric": "mlogloss",
+                "early_stopping_rounds": 50,
+            }
         )
+        self.xgb_model = xgb.XGBClassifier(**xgb_params)
 
         self.xgb_model.fit(
             self.X_train_scaled,
@@ -83,19 +105,34 @@ class StackedEnsembleTrainer:
     def build_lightgbm_model(self):
         logger.info("Training LightGBM model")
 
-        self.lgb_model = lgb.LGBMClassifier(
-            n_estimators=1024,
-            max_depth=8,
-            learning_rate=0.01,
-            num_leaves=31,
-            subsample=0.8,
-            colsample_bytree=0.8,
-            objective="multiclass",
-            num_class=3,
-            random_state=RANDOM_STATE,
-            metric="multi_logloss",
-            verbose=-1,
+        if self.optimized_params and "lightgbm" in self.optimized_params:
+            lgb_params = self.optimized_params["lightgbm"]["best_params"].copy()
+            logger.info("Using optimized LightGBM parameters")
+            logger.info(
+                f"Expected F1 score: {self.optimized_params['lightgbm']['best_score']:.4f}"
+            )
+        else:
+            lgb_params = {
+                "n_estimators": 1024,
+                "max_depth": 8,
+                "learning_rate": 0.01,
+                "num_leaves": 31,
+                "subsample": 0.8,
+                "colsample_bytree": 0.8,
+            }
+            logger.info("Using default LightGBM parameters")
+
+        lgb_params.update(
+            {
+                "objective": "multiclass",
+                "num_class": 3,
+                "random_state": RANDOM_STATE,
+                "metric": "multi_logloss",
+                "verbose": -1,
+            }
         )
+
+        self.lgb_model = lgb.LGBMClassifier(**lgb_params)
 
         self.lgb_model.fit(
             self.X_train_scaled,
