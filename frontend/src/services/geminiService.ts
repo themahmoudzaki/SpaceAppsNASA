@@ -105,7 +105,8 @@ export interface CandidateResponse {
  * @param data - The candidate object's data.
  * @returns A promise that resolves to a disposition object.
  */
-export const checkExoplanetCandidate = async (data: CandidateData): Promise<CandidateResponse> => {
+export const checkExoplanetCandidate = async (data: CandidateData, setConfidence: React.Dispatch<React.SetStateAction<string | null>>
+): Promise<CandidateResponse> => {
   try {
     // Map camelCase (frontend) to snake_case (backend)
     const payload = {
@@ -129,8 +130,7 @@ export const checkExoplanetCandidate = async (data: CandidateData): Promise<Cand
       throw new Error("AI model failed to process the request.");
     }
     const result = await response.json();
-    console.log("AI result:", result);
-    // Map backend result to your interface
+    setConfidence(`${result.confidence}`);
     return {
       disposition: result.predictions?.[0] === "CONFIRMED" ? "CONFIRMED" : "FALSE POSITIVE",
       confidence: result.confidence?.[0] ?? 0,
