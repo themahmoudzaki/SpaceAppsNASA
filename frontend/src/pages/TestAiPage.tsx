@@ -10,15 +10,16 @@ interface TestAiPageProps {
 }
 
 const initialFormData: CandidateData = {
-  period: 9.2,
-  duration: 2.7,
-  depth: 350.5,
-  planetRadius: 1.5,
-  semiMajorAxis: 0.08,
-  starRadius: 0.9,
-  teff: 5500,
-  logg: 4.5,
-  source: 'Kepler',
+    period: 9.2,
+    duration: 2.7,
+    depth: 350.5,
+    planetRadius: 1.5,
+    semiMajorAxis: 0.08,
+    starRadius: 0.9,
+    teff: 5500,
+    logg: 4.5,
+    source: 'Kepler',
+    transitSignalStrength: 100 // <-- Add this line!
 };
 
 const inputConfig = {
@@ -30,6 +31,7 @@ const inputConfig = {
     starRadius: { label: 'Star Radius (xSun)', min: 0.1, max: 10, step: 0.1 },
     teff: { label: 'Star Temperature (K)', min: 2000, max: 10000, step: 100 },
     logg: { label: 'Star Surface Gravity (log g)', min: 1, max: 5, step: 0.1 },
+    transitSignalStrength: { label: 'Transit Signal Strength', min: 1, max: 10000, step: 1 }, // <--- add this!
 };
 
 const LoadingSpinner = () => (
@@ -74,7 +76,7 @@ const TestAiPage: React.FC<TestAiPageProps> = ({ navigate }) => {
             setIsLoading(false);
         }
     };
-    
+
     const resetForm = () => {
         setFormData(initialFormData);
         setResult(null);
@@ -95,7 +97,7 @@ const TestAiPage: React.FC<TestAiPageProps> = ({ navigate }) => {
 
                 <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                     {/* Form Section */}
-                    <motion.form 
+                    <motion.form
                         onSubmit={handleSubmit}
                         className="bg-[var(--secondary-surface)] p-6 rounded-2xl border border-[var(--border-color)] space-y-4"
                         initial={{ opacity: 0, x: -50 }}
@@ -107,32 +109,32 @@ const TestAiPage: React.FC<TestAiPageProps> = ({ navigate }) => {
                                 <div key={key}>
                                     <label htmlFor={key} className="block text-sm font-medium text-[var(--text-muted)]">{config.label}</label>
                                     <div className="flex items-center gap-2 mt-1">
-                                    <input
-                                        type="range"
-                                        id={key}
-                                        name={key}
-                                        min={config.min}
-                                        max={config.max}
-                                        step={config.step}
-                                        value={formData[key as keyof Omit<CandidateData, 'source'>]}
-                                        onChange={handleInputChange}
-                                        className="w-full h-2 bg-black/20 rounded-lg appearance-none cursor-pointer"
-                                        disabled={isLoading}
-                                    />
-                                    <input
-                                        type="number"
-                                        value={formData[key as keyof Omit<CandidateData, 'source'>]}
-                                        onChange={handleInputChange}
-                                        name={key}
-                                        className="w-20 bg-black/30 border border-[var(--border-color)] rounded-md p-1 text-center"
-                                        disabled={isLoading}
-                                    />
+                                        <input
+                                            type="range"
+                                            id={key}
+                                            name={key}
+                                            min={config.min}
+                                            max={config.max}
+                                            step={config.step}
+                                            value={formData[key as keyof Omit<CandidateData, 'source'>]}
+                                            onChange={handleInputChange}
+                                            className="w-full h-2 bg-black/20 rounded-lg appearance-none cursor-pointer"
+                                            disabled={isLoading}
+                                        />
+                                        <input
+                                            type="number"
+                                            value={formData[key as keyof Omit<CandidateData, 'source'>]}
+                                            onChange={handleInputChange}
+                                            name={key}
+                                            className="w-20 bg-black/30 border border-[var(--border-color)] rounded-md p-1 text-center"
+                                            disabled={isLoading}
+                                        />
                                     </div>
                                 </div>
                             ))}
-                             <div>
+                            <div>
                                 <label htmlFor="source" className="block text-sm font-medium text-[var(--text-muted)]">Data Source</label>
-                                <select 
+                                <select
                                     id="source" name="source" value={formData.source} onChange={handleSourceChange}
                                     className="w-full mt-1 bg-black/30 border border-[var(--border-color)] rounded-md p-2"
                                     disabled={isLoading}
@@ -144,7 +146,7 @@ const TestAiPage: React.FC<TestAiPageProps> = ({ navigate }) => {
                         </div>
 
                         <div className="pt-4 flex items-center gap-4">
-                             <button 
+                            <button
                                 type="submit"
                                 disabled={isLoading}
                                 className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[var(--accent-yellow)] to-orange-400 text-black font-bold font-orbitron tracking-wider py-3 px-6 rounded-full text-lg transform hover:scale-105 transition-transform duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
@@ -163,21 +165,21 @@ const TestAiPage: React.FC<TestAiPageProps> = ({ navigate }) => {
                             </button>
                         </div>
                     </motion.form>
-                    
+
                     {/* Result Section */}
-                    <motion.div 
+                    <motion.div
                         className="bg-[var(--secondary-surface)] p-8 rounded-2xl border border-[var(--border-color)] min-h-[300px] flex items-center justify-center"
-                         initial={{ opacity: 0, x: 50 }}
+                        initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                       <AnimatePresence mode="wait">
+                        <AnimatePresence mode="wait">
                             {isLoading ? (
                                 <motion.div key="loader" exit={{ opacity: 0, scale: 0.8 }}>
                                     <LoadingSpinner />
                                 </motion.div>
                             ) : result ? (
-                                <motion.div 
+                                <motion.div
                                     key="result"
                                     initial={{ opacity: 0, scale: 0.8 }}
                                     animate={{ opacity: 1, scale: 1 }}
@@ -194,7 +196,7 @@ const TestAiPage: React.FC<TestAiPageProps> = ({ navigate }) => {
                                             <h3 className="font-orbitron text-3xl font-bold text-red-400 mt-4">FALSE POSITIVE</h3>
                                         </>
                                     )}
-                                    <p className="text-lg font-bold text-white mt-4">Confidence: { (result.confidence * 100).toFixed(1) }%</p>
+                                    <p className="text-lg font-bold text-white mt-4">Confidence: {(result.confidence * 100).toFixed(1)}%</p>
                                     <p className="text-[var(--text-muted)] mt-2 italic">AI Analysis: "{result.reasoning}"</p>
                                 </motion.div>
                             ) : error ? (
@@ -206,7 +208,7 @@ const TestAiPage: React.FC<TestAiPageProps> = ({ navigate }) => {
                                     <p>Awaiting Signal Data...</p>
                                 </motion.div>
                             )}
-                       </AnimatePresence>
+                        </AnimatePresence>
                     </motion.div>
                 </div>
             </div>

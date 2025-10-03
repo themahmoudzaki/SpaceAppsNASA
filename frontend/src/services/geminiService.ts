@@ -1,4 +1,4 @@
-import type { LightCurveDataPoint, Exoplanet } from '../types';
+import type { LightCurveDataPoint } from '../types';
 
 // ===================================================================================
 // NOTE FOR BACKEND DEVELOPER
@@ -82,21 +82,22 @@ export const classifyLightCurve = async (_data: LightCurveDataPoint[]): Promise<
 
 // --- Interfaces for Exoplanet Candidate Check ---
 export interface CandidateData {
-    period: number;
-    duration: number;
-    depth: number;
-    planetRadius: number;
-    semiMajorAxis: number;
-    starRadius: number;
-    teff: number;
-    logg: number;
-    source: 'Kepler' | 'TESS';
+  period: number;
+  duration: number;
+  depth: number;
+  planetRadius: number;
+  semiMajorAxis: number;
+  starRadius: number;
+  teff: number;
+  logg: number;
+  source: 'Kepler' | 'TESS';
+  transitSignalStrength: number; // <-- Add this line!
 }
 
 export interface CandidateResponse {
-    disposition: 'CONFIRMED' | 'FALSE POSITIVE';
-    confidence: number;
-    reasoning: string;
+  disposition: 'CONFIRMED' | 'FALSE POSITIVE';
+  confidence: number;
+  reasoning: string;
 }
 
 /**
@@ -105,114 +106,42 @@ export interface CandidateResponse {
  * @returns A promise that resolves to a disposition object.
  */
 export const checkExoplanetCandidate = async (data: CandidateData): Promise<CandidateResponse> => {
-    // BACKEND TODO: Replace this mock implementation with a real API call.
-    // Example:
-    /*
-    const response = await fetch(`${API_BASE_URL}/check-candidate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+  try {
+    // Map camelCase (frontend) to snake_case (backend)
+    const payload = {
+      period: data.period,
+      duration: data.duration,
+      depth: data.depth,
+      planet_radius: data.planetRadius,
+      semi_major_axis: data.semiMajorAxis,
+      star_radius: data.starRadius,
+      teff: data.teff,
+      transit_signal_strength: data.transitSignalStrength
+    };
+
+    const response = await fetch('http://127.0.0.1:8000/predict/public/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload), // Send as a single object!
     });
+
     if (!response.ok) {
-        throw new Error("AI model failed to process the request.");
+      throw new Error("AI model failed to process the request.");
     }
-    return await response.json() as CandidateResponse;
-    */
-
-    // --- MOCK IMPLEMENTATION ---
-    console.log("MOCK: AI classification for candidate data...");
-    await new Promise(resolve => setTimeout(resolve, MOCK_API_DELAY));
-    
-    // Simple mock logic: higher planet radius and depth -> more likely to be confirmed
-    const score = (data.planetRadius / 25) + (data.depth / 50000);
-    const isConfirmed = score > 0.3 && data.duration < 20;
-
-    if (isConfirmed) {
-        return {
-            disposition: 'CONFIRMED',
-            confidence: Math.random() * 0.1 + 0.88, // 88-98%
-            reasoning: "The transit depth and duration are consistent with a planetary body orbiting a star of this type."
-        };
-    } else {
-        return {
-            disposition: 'FALSE POSITIVE',
-            confidence: Math.random() * 0.15 + 0.85, // 85-100%
-            reasoning: "The observed parameters suggest an eclipsing binary or stellar activity rather than a planetary transit."
-        };
-    }
-}
-
-
-// --- Utility and Interface for Generating Planet Details ---
-const generateRandomGradient = () => {
-    const randomHue = () => Math.floor(Math.random() * 360);
-    const h1 = randomHue();
-    const h2 = (h1 + Math.floor(Math.random() * 120) + 30) % 360;
-    const color1 = `hsl(${h1}, 70%, 50%)`;
-    const color2 = `hsl(${h2}, 60%, 30%)`;
-    return `radial-gradient(circle, ${color1}, ${color2})`;
-};
-
-/**
- * Generates plausible and creative details for a newly discovered exoplanet.
- * @param name - The name of the new exoplanet.
- * @returns A promise that resolves to an object with planet details.
- */
-export const generateExoplanetDetails = async (name: string): Promise<Omit<Exoplanet, 'id' | 'confidence' | 'tag'>> => {
-    // BACKEND TODO: Replace this mock implementation. This could be another model call
-    // or a procedural generation algorithm on your backend.
-    // Example:
-    /*
-    const response = await fetch(`${API_BASE_URL}/generate-details`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name }),
-    });
-    if (!response.ok) {
-        // Handle error, maybe return a fallback object
-        throw new Error('Could not generate planet details.');
-    }
-    const details = await response.json();
+    const result = await response.json();
+    console.log("AI result:", result);
+    // Map backend result to your interface
     return {
-        ...details,
-        name,
-        image: `https://picsum.photos/seed/${name}/512`, // Or get image from backend
-        visualization: { gradient: generateRandomGradient() }
+      disposition: result.predictions?.[0] === "CONFIRMED" ? "CONFIRMED" : "FALSE POSITIVE",
+      confidence: result.confidence?.[0] ?? 0,
+      reasoning: "AI backend result"
     };
-    */
-    
-    // --- MOCK IMPLEMENTATION ---
-    console.log(`MOCK: Generating details for ${name}...`);
-    await new Promise(resolve => setTimeout(resolve, MOCK_API_DELAY));
-    
-    // Fallback in case of an error
-    const fallback = {
-        name,
-        description: "Data transmission from deep space was corrupted. Further analysis is required to learn more about this mysterious world.",
-        orbitalPeriod: parseFloat((Math.random() * 490 + 10).toFixed(1)),
-        radius: parseFloat((Math.random() * 14.2 + 0.8).toFixed(2)),
-        image: `https://picsum.photos/seed/${name}/512`,
-        visualization: { gradient: generateRandomGradient() },
-        discoveryMethod: 'Transit' as const,
+  } catch (error) {
+    console.error("Error classifying candidate:", error);
+    return {
+      disposition: 'FALSE POSITIVE',
+      confidence: 0,
+      reasoning: "AI analysis failed. Unable to classify signal.",
     };
-
-    try {
-        const details = {
-            description: `A newly discovered world, ${name} shows promise with its unique orbital characteristics. Initial scans suggest it could be a gas giant orbiting a G-type star.`,
-            orbitalPeriod: parseFloat((Math.random() * 490 + 10).toFixed(1)),
-            radius: parseFloat((Math.random() * 14.2 + 0.8).toFixed(2)),
-            discoveryMethod: 'Transit' as const
-        };
-        
-        return {
-            name,
-            ...details,
-            image: `https://picsum.photos/seed/${name}/512`,
-            visualization: { gradient: generateRandomGradient() }
-        };
-
-    } catch (error) {
-        console.error("Error generating planet details (mock):", error);
-        return fallback;
-    }
+  }
 };
