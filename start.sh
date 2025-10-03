@@ -1,8 +1,15 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+echo "Starting Docker Compose..."
+docker-compose up -d
 
-echo "Running migrations..."
-python /app/django_backend/manage.py migrate --noinput
+echo "Waiting for containers to start..."
+sleep 5
 
-echo "Starting Django..."
-python /app/django_backend/manage.py runserver 0.0.0.0:8000
+echo "Opening http://localhost in default browser..."
+if command -v xdg-open >/dev/null; then
+  xdg-open http://localhost
+elif command -v open >/dev/null; then
+  open http://localhost
+else
+  echo "Please open http://localhost manually."
+fi

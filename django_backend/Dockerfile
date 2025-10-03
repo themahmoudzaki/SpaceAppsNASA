@@ -5,10 +5,10 @@ FROM python:3.11-slim as builder
 # (build-essential, gcc) and libgomp so built wheels link correctly.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    build-essential \
-    gcc \
-    g++ \
-    libgomp1 \
+      build-essential \
+      gcc \
+      g++ \
+      libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Create and use a virtual environment
@@ -28,7 +28,7 @@ FROM python:3.11-slim as production
 # Install runtime dependencies (only libgomp is required at runtime for LightGBM)
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    libgomp1 \
+      libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy virtualenv from builder

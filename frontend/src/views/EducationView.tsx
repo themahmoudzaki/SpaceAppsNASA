@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Page } from '../types';
+import type{ Page } from '../types';
 import { motion } from 'framer-motion';
 
 interface EducationViewProps {
@@ -46,7 +46,7 @@ const EducationView: React.FC<EducationViewProps> = ({ navigate }) => {
         {educationLevels.map((item, index) => (
             <motion.div
                 key={item.level}
-                className="relative bg-[var(--primary)] rounded-2xl border border-white/10 overflow-hidden group h-96 flex flex-col justify-end p-6 text-white shadow-lg shadow-black/40 cursor-pointer"
+                className="relative bg-[var(--primary-surface)] rounded-2xl border border-white/10 overflow-hidden group h-96 flex flex-col justify-end p-6 text-white shadow-lg shadow-black/40 cursor-pointer"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.15 }}

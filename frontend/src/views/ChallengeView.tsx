@@ -13,9 +13,9 @@ const ChallengeView: React.FC = () => {
     const textY = useTransform(scrollYProgress, [0.1, 0.4], ['30px', '0px']);
 
     return (
-        <section id="challenge" ref={targetRef} className="h-screen relative grid place-items-center overflow-hidden">
+        <section id="challenge" ref={targetRef} className="h-screen relative z-10 grid place-items-center">
             <motion.div
-                className="relative z-20 text-center p-8 max-w-4xl mx-auto"
+                className="relative text-center p-8 max-w-4xl mx-auto"
                 style={{ opacity: textOpacity, y: textY }}
             >
                 <motion.div 

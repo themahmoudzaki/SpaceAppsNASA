@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion} from 'framer-motion';
-import type { Variants } from 'framer-motion';
+import type {Variants } from 'framer-motion';
 import type { Exoplanet } from '../types';
 import { XMarkIcon, CheckCircleIcon, QuestionMarkCircleIcon, XCircleIcon } from './IconComponents';
 
@@ -51,7 +51,7 @@ const PlanetDetailModal: React.FC<PlanetDetailModalProps> = ({ planet, onClose }
       onClick={onClose}
     >
       <motion.div
-        className="bg-gradient-to-br from-[var(--primary)] to-[#0f172a] w-full max-w-4xl max-h-[90vh] rounded-2xl border border-white/10 shadow-2xl shadow-black/50 flex flex-col md:flex-row overflow-hidden"
+        className="bg-gradient-to-br from-[var(--primary-surface)] to-[#0f172a] w-full max-w-4xl max-h-[90vh] rounded-2xl border border-white/10 shadow-2xl shadow-black/50 flex flex-col md:flex-row overflow-hidden"
         variants={modalVariants}
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
       >

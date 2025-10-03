@@ -34,3 +34,36 @@ export interface Article {
     content: string;
     image: string;
 }
+
+export interface Telescope {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+  mission: string;
+  discoveryMethod: string;
+}
+
+export interface CommunityDiscovery {
+  id: string;
+  hunterName: string;
+  planetName: string;
+  timestamp: string;
+  planetImage: string;
+}
+
+export interface GameLevel {
+  features: {
+    period: number;
+    duration: number;
+    depth: number;
+    planet_radius: number;
+    star_radius: number;
+    teff: number;
+    logg: number;
+    semi_major_axis: number;
+    source: string;
+  };
+  isPlanet: boolean;
+  planetId?: string; // Link to the Exoplanet ID if it's a real one
+}

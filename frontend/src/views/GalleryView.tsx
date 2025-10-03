@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import type { Exoplanet, Page } from '../types';
 import { useMockData } from '../hooks/useMockData';
 import ExoplanetCard from '../components/ExoplanetCard';
@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 interface GalleryViewProps {
   navigate: (page: Page) => void;
   onPlanetSelect: (planet: Exoplanet) => void;
+  discoveredPlanetIds: string[];
 }
 
 const GalleryView: React.FC<GalleryViewProps> = ({ navigate, onPlanetSelect }) => {
@@ -39,7 +40,6 @@ const GalleryView: React.FC<GalleryViewProps> = ({ navigate, onPlanetSelect }) =
             </div>
           ))}
         </div>
-      </motion.div>
     </section>
   );
 };
