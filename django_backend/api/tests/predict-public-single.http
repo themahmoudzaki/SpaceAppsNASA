@@ -1,0 +1,13 @@
+POST http://127.0.0.1:8000/predict/public/
+Content-Type: application/json
+
+{
+  "period": 6.339069,
+  "duration": 3.2,
+  "depth": 1143.7649225201621,
+  "planet_radius": 3.66,
+  "semi_major_axis": 0.06896831736666503,
+  "star_radius": 0.897,
+  "teff": 5367.0,
+  "transit_signal_strength": 577.3793836298013
+}
