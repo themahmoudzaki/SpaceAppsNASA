@@ -76,26 +76,19 @@ All components run as services orchestrated by **Docker Compose**:
 ## ⚡ Quick Start (Local Deployment)
 
 ### Option 1: Manual
-
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/<your-org>/exo-x-hunter.git
-   cd exo-x-hunter
-   ```
-
-2. **Start services with Docker Compose**
+**Make sure to have [https://www.docker.com/](Docker) installed**
+1. **Start services with Docker Compose**
 
    ```bash
    docker-compose up -d
    ```
 
-3. **Access the app**
+2. **Access the app**
 
    * Frontend → [http://localhost](http://localhost)
    * Backend API → [http://localhost:8000](http://localhost:8000)
 
-4. **Stop services**
+3. **Stop services**
 
    ```bash
    docker-compose down
