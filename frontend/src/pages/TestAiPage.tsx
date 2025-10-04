@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Page } from '../types';
 import { checkExoplanetCandidate } from '../services/geminiService';
@@ -51,6 +51,8 @@ const TestAiPage: React.FC<TestAiPageProps> = ({ navigate }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState<CandidateResponse | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [confidence, setConfidence] = useState<string | null>(null);
+    const nameRef = useRef<HTMLInputElement>(null)
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -67,7 +69,7 @@ const TestAiPage: React.FC<TestAiPageProps> = ({ navigate }) => {
         setResult(null);
         setError(null);
         try {
-            const response = await checkExoplanetCandidate(formData);
+            const response = await checkExoplanetCandidate(formData, setConfidence);
             setResult(response);
         } catch (err) {
             setError('Failed to communicate with the AI model. Please try again.');
@@ -189,6 +191,50 @@ const TestAiPage: React.FC<TestAiPageProps> = ({ navigate }) => {
                                         <>
                                             <CheckCircleIcon className="w-20 h-20 text-green-400 mx-auto" />
                                             <h3 className="font-orbitron text-3xl font-bold text-green-400 mt-4">PLANET CONFIRMED</h3>
+                                            <h3 className="mt-6 text-sm font-medium text-[var(--text-muted)]">
+                                                Name your discovery:
+                                            </h3>
+                                            <div className="mt-3 flex items-center gap-3">
+                                                <input
+                                                    type="text"
+                                                    ref={nameRef}
+                                                    placeholder="Enter planet name..."
+                                                    className="flex-1 bg-black/30 border border-[var(--border-color)] rounded-lg px-4 py-2 
+                                                        text-white focus:outline-none focus:ring-2 focus:ring-[var(--accent-yellow)] 
+                                                        font-orbitron tracking-wide placeholder-[var(--text-muted)]"
+                                                />
+                                                <button
+                                                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-[var(--accent-yellow)] 
+                                                        to-orange-400 text-black font-bold font-orbitron tracking-wider py-2 px-5 
+                                                        rounded-full text-md transform hover:scale-105 transition-transform duration-300 
+                                                        disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
+                                                    onClick={async () => {
+                                                        const response = await fetch("http://127.0.0.1:8000/exo-planet/", {
+                                                            method: "POST",
+                                                            headers: { "Content-Type": "application/json" },
+                                                            body: JSON.stringify({
+                                                                planet_name: nameRef.current?.value || "",
+                                                                confidence: confidence
+                                                            })
+                                                        });
+
+                                                        if (!response.ok) {
+                                                            const errorData = await response.json();
+                                                            alert(`Error: ${errorData.message || "Something went wrong"}`);
+                                                            return;
+                                                        } else {
+                                                            window.location.reload();
+                                                        }
+
+                                                        const data = await response.json();
+                                                        console.log("Saved:", data);
+                                                    }}
+                                                >
+                                                    <SparklesIcon className="w-5 h-5" />
+                                                    Submit
+                                                </button>
+                                            </div>
+
                                         </>
                                     ) : (
                                         <>

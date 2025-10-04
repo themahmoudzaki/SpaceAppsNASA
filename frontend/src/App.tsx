@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type {Variants} from 'framer-motion';
+import type {Variants } from 'framer-motion';
 import type { Page, Exoplanet, Article } from './types';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
@@ -32,8 +32,19 @@ const App: React.FC = () => {
 
   const [selectedPlanet, setSelectedPlanet] = useState<Exoplanet | null>(null);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  
+  const [discoveredPlanets, setDiscoveredPlanets] = useState<Exoplanet[]>([]);
 
-  const { articles } = useMockData();
+  const { articles, initialPlanets } = useMockData();
+  
+  const handleGameComplete = (foundPlanetNames: string[]) => {
+    const newlyDiscovered = initialPlanets.filter(p => foundPlanetNames.includes(p.name));
+    setDiscoveredPlanets(prev => {
+        const existingIds = new Set(prev.map(p => p.id));
+        const uniqueNewDiscoveries = newlyDiscovered.filter(p => !existingIds.has(p.id));
+        return [...prev, ...uniqueNewDiscoveries];
+    });
+  };
 
   const handleOpenPlanetDetails = (planet: Exoplanet) => {
     setSelectedPlanet(planet);
@@ -66,17 +77,17 @@ const App: React.FC = () => {
   const renderPage = () => {
     switch (page) {
       case 'home':
-        return <HomePage navigate={navigate} onPlanetSelect={handleOpenPlanetDetails} />;
+        return <HomePage navigate={navigate} onPlanetSelect={handleOpenPlanetDetails} discoveredPlanets={discoveredPlanets} />;
       case 'game-instructions':
         return <GameInstructionsPage navigate={navigate} />;
       case 'game':
-        return <GamePage navigate={navigate} />;
+        return <GamePage navigate={navigate} onGameEnd={handleGameComplete} />;
       case 'education':
         return <EducationPage navigate={navigate} level={educationLevel} onPlanetSelect={handleOpenPlanetDetails} onArticleSelect={handleOpenArticle} />;
       case 'test-ai':
         return <TestAiPage navigate={navigate} />;
       default:
-        return <HomePage navigate={navigate} onPlanetSelect={handleOpenPlanetDetails} />;
+        return <HomePage navigate={navigate} onPlanetSelect={handleOpenPlanetDetails} discoveredPlanets={discoveredPlanets}/>;
     }
   };
   

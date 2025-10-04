@@ -36,8 +36,17 @@ const GameInstructionsPage: React.FC<GameInstructionsPageProps> = ({ navigate })
 
                     <div className="my-10">
                         <h2 className="font-orbitron text-xl font-bold text-center text-[var(--accent-lavender)] mb-4">Training Simulation</h2>
-                        <div className="aspect-video bg-black/50 border border-[var(--border-color)] rounded-xl flex items-center justify-center">
-                            <p className="text-[var(--text-muted)]">Demo video coming soon...</p>
+                        <div className="aspect-video bg-black/50 border border-[var(--border-color)] rounded-xl overflow-hidden">
+                            <video
+                                src="public/game-demo.mp4"
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                className="w-full h-full object-cover"
+                            >
+                                Your browser does not support the video tag.
+                            </video>
                         </div>
                     </div>
 
