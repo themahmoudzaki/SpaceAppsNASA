@@ -1,0 +1,14 @@
+# netlify.toml - Must be in the root directory
+
+[build]
+  base    = "frontend/"
+  command = "npm run build"
+  publish = "frontend/build"
+
+# --------------------------------------------------------------------------
+# CRITICAL FIX FOR REACT ROUTING
+# --------------------------------------------------------------------------
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
