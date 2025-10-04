@@ -40,6 +40,7 @@ const GalleryView: React.FC<GalleryViewProps> = ({ navigate, onPlanetSelect }) =
             </div>
           ))}
         </div>
+      </motion.div>
     </section>
   );
 };
