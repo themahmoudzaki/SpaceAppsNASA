@@ -3,6 +3,7 @@ services:
     build:
       context: ./django_backend
       dockerfile: Dockerfile
+    image: exoxhunter-api:latest
 
     environment:
       - CUDA_VISIBLE_DEVICES=""
@@ -11,11 +12,12 @@ services:
 
     ports:
       - "8000:8000"
-    
+
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    image: exoxhunter-frontend:latest
 
     ports:
       - "80:80"
